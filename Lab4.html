@@ -9,10 +9,17 @@
   <body>
     
     <script>
-        let Name = prompt("Please enter your name", "Harry Potter");
-        if (person != null) {
-             document.getElementById("demo").innerHTML = "Hello " + Name + "! What would you want to get today?";
-            }
+        let person = prompt("Please enter your name", "");
+        let text1;
+        if (person == null || person == "") {
+            text1 = "User cancelled the prompt.";
+        } 
+        else {
+            text1 = "Hello " + person + "! What would you want to get today";
+        }
+        
+
+
     </script>
   </body>
 </html>
