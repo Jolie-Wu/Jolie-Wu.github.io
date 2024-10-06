@@ -8,16 +8,18 @@
   <form>
   <input type="button"value="Click Me"onclick="fun();"/>
 </form>
+<p id="demo"></p>
 <script>  
   function fun() {  
     let text;
     let person = prompt ("Please enter your name", "");  
     if(person !=""){
-      return "Hello " + person;
+      text = "Hello " + person;
     }
     else{
-      return "please click the button again and re-enter name"
+      text = "please click the button again and re-enter name"
     }
+    document.getElementById("demo").innerHTML = text;
   }  
   </script>
 </body>
