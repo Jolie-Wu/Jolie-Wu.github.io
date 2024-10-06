@@ -10,6 +10,7 @@
 </form>
 <p id="demo"></p>
 <p id="demo1"></p>
+<p id="demo2"></p>
 <script>  
 
   function personOrder() {  
@@ -18,7 +19,7 @@
     var name;
     var items;
     let theOrder = [];
-    var
+    
   
     now = new Date();
     hour = now.getHours();
@@ -49,7 +50,14 @@
     }
     items = "You ordered " + order + " items which are " + theOrder.join(", ");
     document.getElementById("demo1").innerHTML = items;
+
+    var day = new date;
+    var date= new date;
+    date.setDate(day.getdate()+7);
+    var eta = "The expected arrival date for your order is " + date + ", Thank you for ordering!!!"
+    document.getElementById("demo2").innerHTML = eta;
   }  
+
 
   </script>
 </body>
