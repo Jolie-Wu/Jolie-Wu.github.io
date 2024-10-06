@@ -9,6 +9,7 @@
   <input type="button"value="Click Me"onclick="personOrder();"/>
 </form>
 <p id="demo"></p>
+<p id="demo1"></p>
 <script>  
 
   function personOrder() {  
@@ -41,12 +42,13 @@
     document.getElementById("demo").innerHTML = name;
 
     let order = prompt("Please enter how many items you would like to order:",);
-    for(let i = 0; i <order.length; i++){
+    var x = parseInt(order)
+    for(let i = 1; i <x.length-1; i++){
       let orders = prompt("Item #" + i , "");
       theOrder.push(orders)
     }
     items = "You ordered " + order +" items which are "+ theOrders;
-    document.getElementById("demo").innerHTML = items;
+    document.getElementById("demo1").innerHTML = items;
   }  
 
   </script>
