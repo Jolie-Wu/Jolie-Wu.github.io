@@ -13,12 +13,12 @@
 <script>  
 
   function personOrder() {  
-    let pinfo;
-    let time;
-    let name;
-    let items;
+    var pinfo;
+    var time;
+    var name;
+    var items;
     let theOrder = [];
-    
+    var
   
     now = new Date();
     hour = now.getHours();
@@ -32,7 +32,7 @@
       time = "Good Evening "
     }
 
-    let person = prompt ("Please enter your name", "");  
+    var person = prompt ("Please enter your name", "");  
     if(person !=""){
       name = time + person;
     }
@@ -41,10 +41,10 @@
     }
     document.getElementById("demo").innerHTML = name;
 
-    let order = prompt("Please enter how many items you would like to order:",);
+    var order = prompt("Please enter how many items you would like to order:",);
     var x = parseInt(order)
-    for(let i = 1; i <x.length-1; i++){
-      let orders = prompt("Item #" + i , "");
+    for(var i = 1; i <x.length-1; i++){
+      var orders = prompt("Item #" + i , "");
       theOrder.push(orders)
     }
     items = "You ordered " + order +" items which are "+ theOrders;
