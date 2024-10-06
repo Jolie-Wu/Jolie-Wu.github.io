@@ -43,11 +43,11 @@
 
     var order = prompt("Please enter how many items you would like to order:","");
     var x = parseInt(order);
-    for(var i = 1; i <x.length-1; i++){
+    for(var i = 1; i <= x; i++){
       var orders = prompt("Item #" + i , "");
       theOrder.push(orders);
     }
-    items = "You ordered " + order +" items which are "+ console.log(theOrder);
+    items = "You ordered " + order + " items which are " + theOrder.join(", ");
     document.getElementById("demo1").innerHTML = items;
   }  
 
