@@ -6,14 +6,19 @@
 <body>
   <h1> WELCOME TO THE STORE!!!!</h1>
   <form>
-  <input type="button"value="Click Me"onclick="personName();"/>
+  <input type="button"value="Click Me"onclick="personOrder();"/>
 </form>
 <p id="demo"></p>
 <script>  
 
-  function personName() {  
+  function personOrder() {  
+    let pinfo;
+    let time;
     let name;
-    let time;  
+    let items;
+    let theOrder = [];
+    
+  
     now = new Date();
     hour = now.getHours();
     if(hour < 12){
@@ -34,7 +39,16 @@
       name = "please click the button again and re-enter name"
     }
     document.getElementById("demo").innerHTML = name;
+
+    let order = prompt("Please enter how many items you would like to order:",);
+    for(let i = 0; i <order.length; i++){
+      let orders = prompt("Item #" + i , "");
+      theOrder.push(orders)
+    }
+    items = "You ordered " + order +" items which are "+ theOrders;
+    document.getElementById("demo").innerHTML = items;
   }  
+
   </script>
 </body>
 </html>
