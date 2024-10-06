@@ -8,9 +8,13 @@
   <form>
   <input type="button"value="Click Me"onclick="fun();"/>
 </form>
-<script type = "text/javascript">  
+<script>  
   function fun() {  
-  prompt ("Please enter your name", "");  
+    let text;
+    let person = prompt ("Please enter your name", "");  
+    if(person !=""){
+      return "Hello " + person;
+    }
   }  
   </script>
 </body>
