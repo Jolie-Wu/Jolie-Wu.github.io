@@ -53,7 +53,8 @@
 
     var day = new Date;
     var date= new Date;
-    date.setDate(day.getdate()+7);
+    date.setDate(day.getDate()+7);
+    var options = {  month: 'long', day: 'numeric', year: 'numeric' };
     var eta = "The expected arrival date for your order is " + date.toLocaleDateString(undefined, options) + ", Thank you for ordering!!!";
     document.getElementById("demo2").innerHTML = eta;
   }  
