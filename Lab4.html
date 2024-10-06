@@ -10,16 +10,31 @@
 </form>
 <p id="demo"></p>
 <script>  
-  function fun() {  
-    let text;
-    let person = prompt ("Please enter your name", "");  
-    if(person !=""){
-      text = "Hello " + person;
+function Greetings() {  
+    let time;  
+    now = new Date();
+    hour = now.getHours();
+    if(hour < 12){
+      time = "Good Morning ";
+    }
+    else if(hour <18 ){
+      time = "Good Afternoon "
     }
     else{
-      text = "please click the button again and re-enter name"
+      time = "Good Evening "
     }
-    document.getElementById("demo").innerHTML = text;
+    document.getElementById("demo").innerHTML = time;
+  }
+  function personName() {  
+    let name;
+    let person = prompt ("Please enter your name", "");  
+    if(person !=""){
+      name = "Hello " + person;
+    }
+    else{
+      name = "please click the button again and re-enter name"
+    }
+    document.getElementById("demo").innerHTML = name;
   }  
   </script>
 </body>
