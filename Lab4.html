@@ -42,10 +42,10 @@
     document.getElementById("demo").innerHTML = name;
 
     var order = prompt("Please enter how many items you would like to order:","");
-    var x = parseInt(order)
+    var x = parseInt(order);
     for(var i = 1; i <x.length-1; i++){
       var orders = prompt("Item #" + i , "");
-      theOrder.push(orders)
+      theOrder.push(orders);
     }
     items = "You ordered " + order +" items which are "+ console.log(theOrder);
     document.getElementById("demo1").innerHTML = items;
