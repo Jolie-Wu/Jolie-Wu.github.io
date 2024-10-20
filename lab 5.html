@@ -38,8 +38,9 @@
         </div>
         <br>
         <div>
-            <label for ="pass">Password:</label>
+            <label for="pass">Password:</label>
             <input type="password" id="pass" name="pass" placeholder="" minlength="8" required>
+            <input type="checkbox" id="showPassword"> Show Password
         </div>
         <br>
         <div>
@@ -50,4 +51,18 @@
             <input type="submit">
         </div>
     </form>
+
+    <script>
+        document.getElementById('showPassword').addEventListener('change', function(){
+            const passwordField = document.getElementById('pass');
+            if (this.checked) {
+                passwordField.type = 'text'; // Show password
+            } 
+            else {
+                passwordField.type = 'password'; // Hide password
+            }
+        }
+        );
+    </script>
+
 </body>
