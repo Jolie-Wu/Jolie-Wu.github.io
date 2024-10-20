@@ -39,7 +39,7 @@
         <br>
         <div>
             <label for="pass">Password:</label>
-            <input type="password" id="pass" name="pass" placeholder="" minlength="8" required>
+            <input type="password" id="pass" name="pass" placeholder="" minlength="8" pattern="^(?=.*[!?]).{8,}$" title="Must be atleast 8 characters long and contain a special character">>
             <input type="checkbox" id="showPassword"> Show Password
         </div>
         <br>
