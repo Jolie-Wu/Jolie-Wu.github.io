@@ -57,7 +57,11 @@
         function togglePassword() {
             const password = document.getElementById('pass');
             const showPassword = document.getElementById('showPassword');
-            password.type = showPassword.checked ? 'text' : 'password';
+            if (showPassword.checked) {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
         }
 
         function regSubmit(event){
