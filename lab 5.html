@@ -53,19 +53,20 @@
     </form>
 
     <script>
-        document.getElementById('showPassword').addEventListener('change', function(){
-            const passwordField = document.getElementById('pass');
-            if (this.checked) {
-                passwordField.type = 'text'; 
-            } 
-            else {
-                passwordField.type = 'password'; 
-            }
-        }
-        );
 
-        document.getElementById('registration').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from submitting
+        function togglePassword() {
+            const password = document.getElementById('pass');
+            const showPassword = document.getElementById('showPassword');
+            password.type = showPassword.checked ? 'text' : 'password';
+        }
+
+        function regSubmit(){
+            const firstName = document.getElementById('fname').value;
+            const lastName = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const dob = document.getElementById('DOB').value;
+            const password = document.getElementById('pass').value;
+        }
 
         const firstName = document.getElementById('fname').value;
         const lastName = document.getElementById('lname').value;
@@ -73,31 +74,34 @@
         const dob = document.getElementById('DOB').value;
         const password = document.getElementById('pass').value;
 
-        const specialCharRegex = /[!?]/;
-        if (!specialCharRegex.test(password)) {
-            showResult('Registration failed: Password must contain at least one special character (! or ?).', true);
+        const specialChars = /[!?]/;
+        if (!specialChars.test(password)) {
+            showResult('Registration failed: b.	Passwords must contain a special character (in our case ! and ?)', true);
             return;
         }
 
-        // Create user object
+        
+        let starredPW = '';
+        for (let i = 0; i < password.length; i++) {
+            starredPW += '*';
+        }
+        
         const user = {
             firstName,
             lastName,
             email,
-            password: '*'.repeat(password.length), // Mask password in output
+            password: starredPW, 
             dob,
         };
 
-        // Show success message
         showResult(`Registration successful!<br>
                     First Name: ${user.firstName}<br>
                     Last Name: ${user.lastName}<br>
                     Email: ${user.email}<br>
                     Password: ${user.password}<br>
                     Date of Birth: ${user.dob}`, false);
-    });
+    
 
-    // Function to display result messages
     function showResult(message, isError) {
         let resultDiv = document.getElementById('result');
         if (!resultDiv) {
