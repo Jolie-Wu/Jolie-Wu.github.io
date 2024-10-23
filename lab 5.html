@@ -56,52 +56,58 @@
         document.getElementById('showPassword').addEventListener('change', function(){
             const passwordField = document.getElementById('pass');
             if (this.checked) {
-                passwordField.type = 'text'; // Show password
+                passwordField.type = 'text'; 
             } 
             else {
-                passwordField.type = 'password'; // Hide password
+                passwordField.type = 'password'; 
             }
         }
         );
 
         document.getElementById('registration').addEventListener('submit', function(event) {
-            event.preventDefault();
+        event.preventDefault(); // Prevent form from submitting
 
-            const firstName = document.getElementById('fname').value;
-            const lastName = document.getElementById('lname').value;
-            const email = document.getElementById('email').value;
-            const dob = document.getElementById('DOB').value;
-            const password = document.getElementById('pass').value;
+        const firstName = document.getElementById('fname').value;
+        const lastName = document.getElementById('lname').value;
+        const email = document.getElementById('email').value;
+        const dob = document.getElementById('DOB').value;
+        const password = document.getElementById('pass').value;
 
-            const specialCharRegex = /[!?]/;
-            if (!specialCharRegex.test(password)) {
-                showResult('Registration failed: Password must contain at least one special character (! or ?).', true);
-                return;
-            }
-
-            // Create user object
-            const user = {
-                firstName,
-                lastName,
-                email,
-                password '*'.repeat(password.length), 
-                dob,
-            };
-
-            // Show success message
-            showResult(`Registration successful!<br>
-                        First Name: ${user.firstName}<br>
-                        Last Name: ${user.lastName}<br>
-                        Email: ${user.email}<br>
-                        Password: ${user.password}<br>
-                        Date of Birth: ${user.dob}`, false);
-        });
-
-        function showResult(message, isError) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = message;
-            resultDiv.className = isError ? 'text-danger' : 'text-success';
+        const specialCharRegex = /[!?]/;
+        if (!specialCharRegex.test(password)) {
+            showResult('Registration failed: Password must contain at least one special character (! or ?).', true);
+            return;
         }
+
+        // Create user object
+        const user = {
+            firstName,
+            lastName,
+            email,
+            password: '*'.repeat(password.length), // Mask password in output
+            dob,
+        };
+
+        // Show success message
+        showResult(`Registration successful!<br>
+                    First Name: ${user.firstName}<br>
+                    Last Name: ${user.lastName}<br>
+                    Email: ${user.email}<br>
+                    Password: ${user.password}<br>
+                    Date of Birth: ${user.dob}`, false);
+    });
+
+    // Function to display result messages
+    function showResult(message, isError) {
+        let resultDiv = document.getElementById('result');
+        if (!resultDiv) {
+            resultDiv = document.createElement('div');
+            resultDiv.id = 'result';
+            document.body.appendChild(resultDiv);
+        }
+        resultDiv.innerHTML = message;
+        resultDiv.className = isError ? 'text-danger' : 'text-success';
+    }
     </script>
 
 </body>
