@@ -75,20 +75,22 @@
 
             const specialCharRegex = /[!?]/;
             if (!specialCharRegex.test(password)) {
-                showResult('Registration failed: Password must contain at least one special character (! or ?).', true);
+                showResult('Registration failed: Passwords must contain a special character (! or ?)')
                 return;
             }
+            let starredPass = '';
+                for (let i = 0; i < password.length; i++) {
+                starredPass += '*';
+                }
 
-            // Create user object
             const user = {
                 firstName,
                 lastName,
                 email,
-                password '*'.repeat(password.length), 
+                password starredPass, 
                 dob,
             };
 
-            // Show success message
             showResult(`Registration successful!<br>
                         First Name: ${user.firstName}<br>
                         Last Name: ${user.lastName}<br>
@@ -98,10 +100,14 @@
         });
 
         function showResult(message, isError) {
-            const resultDiv = document.getElementById('result');
+            let resultDiv = document.getElementById('result');
+            if (!resultDiv) {
+                resultDiv = document.createElement('div');
+                resultDiv.id = 'result';
+                document.body.appendChild(resultDiv);
+            }
             resultDiv.innerHTML = message;
             resultDiv.className = isError ? 'text-danger' : 'text-success';
-        }
     </script>
 
 </body>
