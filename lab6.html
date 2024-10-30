@@ -18,17 +18,17 @@
             <h1>CAT FACTS!!!</h1>
         </div>
 
-        <input type="button" value="Click for Cat Facts" onclick="fetchCat()" class="btn btn-primary mb-4">
+        <input type="button" value="Click for Cat Facts" onclick="fetchCat()">
 
-        <table class="table table-bordered">
+        <table>
             <thead>
                 <tr>
                     <th>factId:</th>
-                    <th>facts:</th>
+                    <th>fact:</th>
                 </tr>
             </thead>
             <tbody id="catFactsTable">
-                <!-- Facts will be populated here -->
+
             </tbody>
         </table>
 
@@ -42,15 +42,15 @@
             fetch('https://brianobruno.github.io/cats.json')
                 .then(response => response.json())
                 .then(data => {
-
+    
                     const sortedFacts = data.facts.sort((a, b) => a.factId - b.factId);
-                    const factsList = document.getElementById('factsList');
+
+                    const catFactsTable = document.getElementById('catFactsTable');
 
                     sortedFacts.forEach(fact => {
-                        const listItem = document.createElement('li');
-                        listItem.className = 'list-group-item';
-                        listItem.innerHTML = `<strong>${fact.factId}:</strong> ${fact.text}`;
-                        catFactsList.appendChild(listItem);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${fact.factId}</td><td>${fact.text}</td>`;
+                        catFactsTable.appendChild(row);
                     });
 
                     document.getElementById('catImage').src = data.catPhoto;
@@ -59,4 +59,4 @@
         }
     </script>
 </body>
-</html
+</html>
