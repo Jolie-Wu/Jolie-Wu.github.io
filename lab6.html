@@ -20,8 +20,17 @@
 
         <input type="button" value="Click for Cat Facts" onclick="fetchCat()" class="btn btn-primary mb-4">
 
-        <ul id="catFactsList" class="list-group mb-4">
-        </ul>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>factId:</th>
+                    <th>facts:</th>
+                </tr>
+            </thead>
+            <tbody id="catFactsTable">
+                <!-- Facts will be populated here -->
+            </tbody>
+        </table>
 
         <div class="text-center">
             <img id="catImage" src="placeholder.jpg" alt="Cat Image" class="img-fluid" style="max-width: 300px;">
@@ -35,9 +44,7 @@
                 .then(data => {
 
                     const sortedFacts = data.facts.sort((a, b) => a.factId - b.factId);
-                    const catFactsList = document.getElementById('catFactsList');
-
-                    catFactsList.innerHTML = ''; 
+                    const factsList = document.getElementById('factsList');
 
                     sortedFacts.forEach(fact => {
                         const listItem = document.createElement('li');
