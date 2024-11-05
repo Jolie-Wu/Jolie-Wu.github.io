@@ -111,6 +111,18 @@
             document.getElementById('DOB').placeholder = `DOB: ${user.dob}`;
             document.getElementById('pass').placeholder = `Password: ${user.password}`;
 
+            var userInfo = `
+            <strong>First Name:</strong> ${user.firstName}<br>
+            <strong>Last Name:</strong> ${user.lastName}<br>
+            <strong>Email:</strong> ${user.email}<br>
+            <strong>Password:</strong> ${user.password}<br>
+            <strong>Date of Birth:</strong> ${user.dob}
+            `;
+        
+            document.getElementById("userInfo").innerHTML = userInfo;
+            document.getElementById("result").style.display = "block";
+            demoDisplay();
+
             return false;
         }
 
