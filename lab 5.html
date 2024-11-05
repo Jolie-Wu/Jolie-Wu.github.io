@@ -55,7 +55,12 @@
     <script>
         function togglePass() {
             var passInput = document.getElementById('pass');
-            passwordField.type = passwordInput.type === 'password' ? 'text' : 'password';
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+            } 
+            else {
+                passwordField.type = 'password';
+            }
         }
 
         function registration() {
@@ -67,15 +72,15 @@
             }
 
             var specialChar = ['!', '?'];
-
+            var reqirements = false
             for (var i = 0; i < password.length; i++) {
                 for (var j = 0; j < specialChar.length; j++) {
                     if (password[i] == specialChar[j]) {
-                        return true;
+                        return reqirements = true;
                         break;
                     }
                 }
-                if (true) {
+                if (reqirements==true) {
                     break;
                 }
             }
