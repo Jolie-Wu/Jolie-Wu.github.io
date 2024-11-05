@@ -53,62 +53,60 @@
     </form>
 
     <script>
-        document.getElementById('showPassword').addEventListener('change', function(){
-            const passwordField = document.getElementById('pass');
-            if (this.checked) {
-                passwordField.type = 'text'; 
-            } 
-            else {
-                passwordField.type = 'password'; 
-            }
+        function togglePass() {
+            var passInput = document.getElementById('pass');
+            passwordField.type = passwordInput.type === 'password' ? 'text' : 'password';
         }
-        );
 
-        document.getElementById('registration').addEventListener('submit', function(event) {
-            event.preventDefault();
+        function registration() {
+            var password = document.getElementById('pass').value;
 
-            const firstName = document.getElementById('fname').value;
-            const lastName = document.getElementById('lname').value;
-            const email = document.getElementById('email').value;
-            const dob = document.getElementById('DOB').value;
-            const password = document.getElementById('pass').value;
-
-            const specialCharRegex = /[!?]/;
-            if (!specialCharRegex.test(password)) {
-                showResult('Registration failed: Passwords must contain a special character (! or ?)')
-                return;
+            if (password.length < 8) {
+                document.getElementById('pass').placeholder = 'Min 8 characters required';
+                return false;
             }
-            let starredPass = '';
-                for (let i = 0; i < password.length; i++) {
-                starredPass += '*';
-                }
 
-            const user = {
-                firstName,
-                lastName,
-                email,
-                password: starredPass, 
-                dob,
+            var specialChar = ['!', '?'];
+
+            for (var i = 0; i < password.length; i++) {
+                for (var j = 0; j < specialChar.length; j++) {
+                    if (password[i] == specialChar[j]) {
+                        return true;
+                        break;
+                    }
+                }
+                if (true) {
+                    break;
+                }
+            }
+
+            if (false) {
+                document.getElementById('pass').placeholder = 'Must contain ! or ?';
+                return false;
+            }
+
+            var starredPass = '';
+            for(var i = 0; i<password.length;i++){
+                starredPass +='*'
+            }
+
+            var user = {
+                firstName: document.getElementById('fname').value,
+                lastName: document.getElementById('lname').value,
+                email: document.getElementById('email').value,
+                password: starredPass,
+                dob: document.getElementById('DOB').value
             };
 
-            showResult(`Registration successful!<br>
-                        First Name: ${user.firstName}<br>
-                        Last Name: ${user.lastName}<br>
-                        Email: ${user.email}<br>
-                        Password: ${user.password}<br>
-                        Date of Birth: ${user.dob}`, false);
-        });
+            document.getElementById('fname').placeholder = `Registered: ${user.firstName}`;
+            document.getElementById('lname').placeholder = `Registered: ${user.lastName}`;
+            document.getElementById('email').placeholder = `Registered: ${user.email}`;
+            document.getElementById('DOB').placeholder = `DOB: ${user.dob}`;
+            document.getElementById('pass').placeholder = `Password: ${user.password}`;
 
-        function showResult(message, isError) {
-            let resultDiv = document.getElementById('result');
-            if (!resultDiv) {
-                resultDiv = document.createElement('div');
-                resultDiv.id = 'result';
-                document.body.appendChild(resultDiv);
-            }
-            resultDiv.innerHTML = message;
-            resultDiv.className = isError ? 'text-danger' : 'text-success';
+            return false;
         }
+
     </script>
 
 </body>
