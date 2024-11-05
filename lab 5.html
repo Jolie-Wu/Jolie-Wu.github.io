@@ -40,7 +40,8 @@
         <div>
             <label for="pass">Password:</label>
             <input type="password" id="pass" name="pass" placeholder="" minlength="8" pattern="^(?=.*[!?]).{8,}$" title="Must be atleast 8 characters long and contain a special character">
-            <input type="checkbox" id="showPassword"> Show Password
+            <input type="checkbox" id="showPassword" onclick="togglePass()"> Show Password
+
         </div>
         <br>
         <div>
@@ -80,7 +81,8 @@
                         break;
                     }
                 }
-                if (reqirements==true) {
+                if (reqirements!=true) {
+                    document.getElementById('pass').placeholder = 'Must contain atleast 1 special character ! or ?';
                     break;
                 }
             }
