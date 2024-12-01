@@ -55,10 +55,10 @@
         async function fetchPlatformStatus() {
             try {
                 const proxyUrl = 'https://api.allorigins.win/get?url=';  // New Proxy URL
-                const apiUrl = 'https://api.riotgames.com/val/status/v1/platform-data';  // Riot API endpoint
+                const apiUrl = 'https://na.api.riotgames.com/val/status/v1/platform-data';  // Riot API endpoint
 
                 const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
-                    headers: { 'X-Riot-Token': API_KEY }
+                    headers: { 'api_key': API_KEY }
                 });
 
                 // Check if the response is OK (status code 200-299)
@@ -89,7 +89,7 @@
                 const apiUrl = 'https://api.riotgames.com/val/content/v1/contents';  // Riot API endpoint
 
                 const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
-                    headers: { 'X-Riot-Token': API_KEY }
+                    headers: { 'api_key': API_KEY }
                 });
 
                 // Check if the response is OK (status code 200-299)
