@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant API Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Embedded CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .alert {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body onload="initializeApp()">
+    <div class="container mt-5">
+        <h1 class="text-center">Valorant API Dashboard</h1>
+
+        <!-- Platform Status Section -->
+        <div id="platform-status" class="mt-4">
+            <h2>Platform Status</h2>
+            <div class="alert alert-info">Loading platform status...</div>
+        </div>
+
+        <!-- Game Content Section -->
+        <div id="game-content" class="mt-4">
+            <h2>Game Content</h2>
+            <div class="alert alert-info">Loading game content...</div>
+        </div>
+    </div>
+
+    <script>
+        // Riot API Key (replace with your actual key)
+        const API_KEY = "RGAPI-828ed108-356a-476a-9016-734d79a2ba46";
+
+        // Function to fetch platform status
+        async function fetchPlatformStatus() {
+            try {
+                const response = await fetch('https://api.riotgames.com/val/status/v1/platform-data', {
+                    headers: { 'X-Riot-Token': API_KEY }
+                });
+
+                // Check if the response is OK (status code 200-299)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const statusElement = document.getElementById('platform-status');
+                statusElement.innerHTML = `
+                    <div class="alert alert-success">
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching platform status:', error);
+                const statusElement = document.getElementById('platform-status');
+                statusElement.innerHTML = `
+                    <div class="alert alert-danger">
+                        Failed to load platform status. Please check the console for more details.
+                    </div>
+                `;
+            }
+        }
+
+        // Function to fetch game content
+        async function fetchGameContent() {
+            try {
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Proxy URL
+                const apiUrl = 'https://api.riotgames.com/val/content/v1/contents';  // Riot API endpoint
+
+                const response = await fetch(proxyUrl + apiUrl, {
+                    headers: { 'X-Riot-Token': API_KEY }
+                });
+
+                // Check if the response is OK (status code 200-299)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const contentElement = document.getElementById('game-content');
+                contentElement.innerHTML = `
+                    <div class="alert alert-success">
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching game content:', error);
+                const contentElement = document.getElementById('game-content');
+                contentElement.innerHTML = `
+                    <div class="alert alert-danger">
+                        Failed to load game content. Please check the console for more details.
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize App
+        function initializeApp() {
+            fetchPlatformStatus();
+            fetchGameContent();
+        }
+    </script>
+</body>
+</html>
+
