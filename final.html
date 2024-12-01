@@ -49,13 +49,13 @@
 
     <script>
         // Riot API Key (replace with your actual key)
-        //const API_KEY = "RGAPI-fbee62eb-7ff2-4ee9-a576-920db79e6835";
+        const API_KEY = "RGAPI-fbee62eb-7ff2-4ee9-a576-920db79e6835";
 
         // Function to fetch platform status
         async function fetchPlatformStatus() {
             try {
                 const response = await fetch('https://na.api.riotgames.com/val/status/v1/platform-data', {
-                    headers: { 'X-Riot-Token': 'RGAPI-fbee62eb-7ff2-4ee9-a576-920db79e6835' }
+                    headers: { 'X-Riot-Token': API_KEY }
                 });
 
                 // Check if the response is OK (status code 200-299)
@@ -85,7 +85,7 @@
         async function fetchGameContent() {
             try {
                 const response = await fetch('https://na.api.riotgames.com/val/content/v1/contents', {
-                    headers: { 'X-Riot-Token': 'RGAPI-fbee62eb-7ff2-4ee9-a576-920db79e6835'}
+                    headers: { 'X-Riot-Token':API_KEY}
                 });
 
                 // Check if the response is OK (status code 200-299)
