@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valorant API Dashboard</title>
+    <title>Valorant API Dashboar</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -51,13 +51,10 @@
         // Riot API Key (replace with your actual key)
         const API_KEY = "RGAPI-828ed108-356a-476a-9016-734d79a2ba46";
 
-        // Function to fetch platform status with proxy (AllOrigins)
+        // Function to fetch platform status
         async function fetchPlatformStatus() {
             try {
-                const proxyUrl = 'https://api.allorigins.win/get?url=';  // New Proxy URL
-                const apiUrl = 'https://na.api.riotgames.com/val/status/v1/platform-data';  // Riot API endpoint
-
-                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
+                const response = await fetch('https://na.api.riotgames.com/val/status/v1/platform-data', {
                     headers: { 'api_key': API_KEY }
                 });
 
@@ -67,14 +64,16 @@
                 }
 
                 const data = await response.json();
-                document.getElementById('platform-status').innerHTML = `
+                const statusElement = document.getElementById('platform-status');
+                statusElement.innerHTML = `
                     <div class="alert alert-success">
                         <pre>${JSON.stringify(data, null, 2)}</pre>
                     </div>
                 `;
             } catch (error) {
                 console.error('Error fetching platform status:', error);
-                document.getElementById('platform-status').innerHTML = `
+                const statusElement = document.getElementById('platform-status');
+                statusElement.innerHTML = `
                     <div class="alert alert-danger">
                         Failed to load platform status. Please check the console for more details.
                     </div>
@@ -82,13 +81,10 @@
             }
         }
 
-        // Function to fetch game content with proxy (AllOrigins)
+        // Function to fetch game content
         async function fetchGameContent() {
             try {
-                const proxyUrl = 'https://api.allorigins.win/get?url=';  // New Proxy URL
-                const apiUrl = 'https://api.riotgames.com/val/content/v1/contents';  // Riot API endpoint
-
-                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
+                const response = await fetch('https://na.api.riotgames.com/val/content/v1/contents', {
                     headers: { 'api_key': API_KEY }
                 });
 
@@ -98,14 +94,16 @@
                 }
 
                 const data = await response.json();
-                document.getElementById('game-content').innerHTML = `
+                const contentElement = document.getElementById('game-content');
+                contentElement.innerHTML = `
                     <div class="alert alert-success">
                         <pre>${JSON.stringify(data, null, 2)}</pre>
                     </div>
                 `;
             } catch (error) {
                 console.error('Error fetching game content:', error);
-                document.getElementById('game-content').innerHTML = `
+                const contentElement = document.getElementById('game-content');
+                contentElement.innerHTML = `
                     <div class="alert alert-danger">
                         Failed to load game content. Please check the console for more details.
                     </div>
@@ -121,3 +119,4 @@
     </script>
 </body>
 </html>
+
