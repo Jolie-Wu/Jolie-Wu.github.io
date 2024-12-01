@@ -32,7 +32,7 @@
 </head>
 <body onload="initializeApp()">
     <div class="container mt-5">
-        <h1 class="text-center">Valorant Dashboard</h1>
+        <h1 class="text-center">Valorant API Dashboard</h1>
 
         <!-- Platform Status Section -->
         <div id="platform-status" class="mt-4">
@@ -51,13 +51,13 @@
         // Riot API Key (replace with your actual key)
         const API_KEY = "RGAPI-828ed108-356a-476a-9016-734d79a2ba46";
 
-        // Function to fetch platform status with proxy
+        // Function to fetch platform status with proxy (AllOrigins)
         async function fetchPlatformStatus() {
             try {
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Proxy URL
+                const proxyUrl = 'https://api.allorigins.win/get?url=';  // New Proxy URL
                 const apiUrl = 'https://api.riotgames.com/val/status/v1/platform-data';  // Riot API endpoint
 
-                const response = await fetch(proxyUrl + apiUrl, {
+                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
                     headers: { 'X-Riot-Token': API_KEY }
                 });
 
@@ -82,13 +82,13 @@
             }
         }
 
-        // Function to fetch game content with proxy
+        // Function to fetch game content with proxy (AllOrigins)
         async function fetchGameContent() {
             try {
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Proxy URL
+                const proxyUrl = 'https://api.allorigins.win/get?url=';  // New Proxy URL
                 const apiUrl = 'https://api.riotgames.com/val/content/v1/contents';  // Riot API endpoint
 
-                const response = await fetch(proxyUrl + apiUrl, {
+                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
                     headers: { 'X-Riot-Token': API_KEY }
                 });
 
@@ -121,4 +121,3 @@
     </script>
 </body>
 </html>
-
