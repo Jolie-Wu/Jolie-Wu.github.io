@@ -141,72 +141,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VALORANT Info</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        async function fetchData() {
-            try {
-                // Fetch version information
-                const region = "eu"; // Replace with desired region: eu, na, etc.
-                const versionResponse = await fetch(`https://api.henrikdev.xyz/valorant/v1/version/${region}`);
-                const versionData = await versionResponse.json();
-
-                document.getElementById('version').innerHTML = `
-                    <p><strong>Version:</strong> ${versionData.data.version}</p>
-                    <p><strong>Client Version:</strong> ${versionData.data.clientVersion}</p>
-                    <p><strong>Branch:</strong> ${versionData.data.branch}</p>
-                    <p><strong>Region:</strong> ${versionData.data.region}</p>
-                `;
-
-                // Fetch content information
-                const contentResponse = await fetch('https://api.henrikdev.xyz/valorant/v1/content');
-                const contentData = await contentResponse.json();
-
-                const characters = contentData.characters.map(char => `<li>${char.name}</li>`).join('');
-                const maps = contentData.maps.map(map => `<li>${map.name}</li>`).join('');
-                const equipment = contentData.equips.map(equip => `<li>${equip.name}</li>`).join('');
-
-                document.getElementById('characters').innerHTML = characters;
-                document.getElementById('maps').innerHTML = maps;
-                document.getElementById('equipment').innerHTML = equipment;
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                document.getElementById('error').innerText = "Failed to fetch data. Please try again.";
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchData);
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valorant Game Info</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container my-5">
-        <h1 class="text-center mb-4">VALORANT Info</h1>
-        <div id="error" class="text-danger text-center"></div>
+  <div class="container my-5">
+    <h1 class="text-center">Valorant Game Information</h1>
+    <div id="version-info" class="my-4"></div>
+    <div id="content-info" class="my-4"></div>
+  </div>
 
-        <!-- Version Information -->
-        <div class="mb-5">
-            <h2>Game Version</h2>
-            <div id="version" class="border p-3 bg-light"></div>
-        </div>
+  <script>
+    // API Key
+    const apiKey = 'HDEV-2c5107b5-a06d-49c4-afb2-95a49b71f81f'
 
-        <!-- Content Information -->
-        <div class="row">
-            <div class="col-md-4">
-                <h3>Characters</h3>
-                <ul id="characters" class="list-group"></ul>
-            </div>
-            <div class="col-md-4">
-                <h3>Maps</h3>
-                <ul id="maps" class="list-group"></ul>
-            </div>
-            <div class="col-md-4">
-                <h3>Equipment</h3>
-                <ul id="equipment" class="list-group"></ul>
-            </div>
+
+    // Fetch game version info
+    async function fetchVersion(region) {
+      const response = await fetch(`https://api.henrikdev.xyz/valorant/v1/version/${region}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': apiKey
+        }
+      });
+      return response.json();
+    }
+
+    // Fetch game content
+    async function fetchContent() {
+      const response = await fetch('https://api.henrikdev.xyz/valorant/v1/content', {
+        method: 'GET',
+        headers: {
+          'Authorization': apiKey
+        }
+      });
+      return response.json();
+    }
+
+    // Display game version info
+    async function displayVersionInfo() {
+      const region = 'na'; // Replace with your desired region
+      const data = await fetchVersion(region);
+      const versionDiv = document.getElementById('version-info');
+      versionDiv.innerHTML = `
+        <h3>Game Version</h3>
+        <ul>
+          <li><strong>Version:</strong> ${data.data.version}</li>
+          <li><strong>Client Version:</strong> ${data.data.clientVersion}</li>
+          <li><strong>Branch:</strong> ${data.data.branch}</li>
+          <li><strong>Region:</strong> ${data.data.region}</li>
+        </ul>
+      `;
+    }
+
+    // Display game content
+    async function displayContentInfo() {
+      const data = await fetchContent();
+      const contentDiv = document.getElementById('content-info');
+      const characters = data.characters.map(char => `<li>${char.name}</li>`).join('');
+      const maps = data.maps.map(map => `<li>${map.name}</li>`).join('');
+      const equips = data.equips.map(equip => `<li>${equip.name}</li>`).join('');
+
+      contentDiv.innerHTML = `
+        <h3>Game Content</h3>
+        <div>
+          <h4>Characters</h4>
+          <ul>${characters}</ul>
         </div>
-    </div>
+        <div>
+          <h4>Maps</h4>
+          <ul>${maps}</ul>
+        </div>
+        <div>
+          <h4>Equipments</h4>
+          <ul>${equips}</ul>
+        </div>
+      `;
+    }
+
+    // Run the functions immediately
+    displayVersionInfo();
+    displayContentInfo();
+  </script>
 </body>
 </html>
