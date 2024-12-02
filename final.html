@@ -13,68 +13,22 @@
             border-radius: 5px;
             overflow: auto;
         }
-
-        html {
-            scroll-behavior: smooth; /* Enable smooth scrolling */
-        }
     </style>
 </head>
 <body onload="initializeApp()">
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Valorant App</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#agents">Agents</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#maps">Maps</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#guns">Guns</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5 pt-5">
+    <div class="container mt-5">
         <h1 class="text-center mb-4">Valorant App</h1>
-
-        <!-- Region Selection and Status Button -->
-        <div class="mb-4 text-center">
-            <select id="region-select" class="form-select w-25 d-inline-block">
-                <option value="na">North America</option>
-                <option value="eu">Europe</option>
-                <option value="ap">Asia Pacific</option>
-            </select>
-            <button class="btn btn-primary" onclick="fetchPlatformStatus()">Check Platform Status</button>
-        </div>
         
         <!-- Platform Status Section -->
-        <div id="platform-status" class="alert alert-info">Select a region and click the button to fetch platform status.</div>
-
-        <!-- Agents Section -->
-        <div id="agents" class="mt-5">
-            <h2>Agents</h2>
-            <div id="agents-content" class="alert alert-secondary">Loading agents...</div>
+        <div class="mb-5">
+            <h2>Platform Status</h2>
+            <div id="platform-status" class="alert alert-info">Loading platform status...</div>
         </div>
-
-        <!-- Maps Section -->
-        <div id="maps" class="mt-5">
-            <h2>Maps</h2>
-            <div id="maps-content" class="alert alert-secondary">Loading maps...</div>
-        </div>
-
-        <!-- Guns Section -->
-        <div id="guns" class="mt-5">
-            <h2>Guns</h2>
-            <div id="guns-content" class="alert alert-secondary">Loading guns...</div>
+        
+        <!-- Game Content Section -->
+        <div>
+            <h2>Game Content</h2>
+            <div id="game-content" class="alert alert-info">Loading game content...</div>
         </div>
     </div>
 
@@ -83,16 +37,16 @@
 
     <!-- JavaScript Logic -->
     <script>
+        // Function to fetch and display platform status
         async function fetchPlatformStatus() {
-            const region = document.getElementById('region-select').value;
             try {
-                const response = await fetch(`http://localhost:3000/api/platform-status?region=${region}`);
+                const response = await fetch('http://localhost:3000/api/platform-status'); // Adjust URL for deployment
                 if (!response.ok) throw new Error("Failed to fetch platform status");
                 const data = await response.json();
                 document.getElementById('platform-status').classList.remove('alert-info');
                 document.getElementById('platform-status').classList.add('alert-success');
                 document.getElementById('platform-status').innerHTML = `
-                    <h5>Status for region: ${region.toUpperCase()}</h5>
+                    <h5>Status:</h5>
                     <pre>${JSON.stringify(data, null, 2)}</pre>
                 `;
             } catch (error) {
@@ -103,38 +57,31 @@
             }
         }
 
+        // Function to fetch and display game content
         async function fetchGameContent() {
             try {
-                const response = await fetch('http://localhost:3000/api/game-content');
+                const response = await fetch('http://localhost:3000/api/game-content'); // Adjust URL for deployment
                 if (!response.ok) throw new Error("Failed to fetch game content");
                 const data = await response.json();
-
-                // Populate agents
-                document.getElementById('agents-content').innerHTML = `
-                    <ul>${(data.agents || []).map(agent => `<li>${agent.displayName || 'Unknown'}</li>`).join('')}</ul>
-                `;
-
-                // Populate maps
-                document.getElementById('maps-content').innerHTML = `
-                    <ul>${(data.maps || []).map(map => `<li>${map.displayName || 'Unknown'}</li>`).join('')}</ul>
-                `;
-
-                // Populate guns
-                document.getElementById('guns-content').innerHTML = `
-                    <ul>${(data.guns || []).map(gun => `<li>${gun.displayName || 'Unknown'}</li>`).join('')}</ul>
+                document.getElementById('game-content').classList.remove('alert-info');
+                document.getElementById('game-content').classList.add('alert-success');
+                document.getElementById('game-content').innerHTML = `
+                    <h5>Content:</h5>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
                 `;
             } catch (error) {
                 console.error('Error fetching game content:', error);
-                document.getElementById('agents-content').innerText = 'Failed to load agents.';
-                document.getElementById('maps-content').innerText = 'Failed to load maps.';
-                document.getElementById('guns-content').innerText = 'Failed to load guns.';
+                document.getElementById('game-content').classList.remove('alert-info');
+                document.getElementById('game-content').classList.add('alert-danger');
+                document.getElementById('game-content').innerText = 'Failed to load game content.';
             }
         }
 
+        // Initialize the app by fetching all data
         function initializeApp() {
+            fetchPlatformStatus();
             fetchGameContent();
         }
     </script>
 </body>
 </html>
-
