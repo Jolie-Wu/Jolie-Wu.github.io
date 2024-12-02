@@ -125,11 +125,13 @@
                 const agentsList = document.getElementById('agents-list');
                 agentsList.innerHTML = '';
                 if (data.characters) {
-                    data.characters.forEach(character => {
-                        const li = document.createElement('li');
-                        li.innerText = character.name || 'Unknown'; // Check for missing data
-                        agentsList.appendChild(li);
-                    });
+                    data.characters
+                        .filter(character => character.name && character.name !== "Null UI Data!")
+                        .forEach(character => {
+                            const li = document.createElement('li');
+                            li.innerText = character.name;
+                            agentsList.appendChild(li);
+                        });
                 } else {
                     agentsList.innerText = "No agents found.";
                 }
@@ -138,11 +140,13 @@
                 const mapsList = document.getElementById('maps-list');
                 mapsList.innerHTML = '';
                 if (data.maps) {
-                    data.maps.forEach(map => {
-                        const li = document.createElement('li');
-                        li.innerText = map.name || 'Unknown'; // Check for missing data
-                        mapsList.appendChild(li);
-                    });
+                    data.maps
+                        .filter(map => map.name && map.name !== "Null UI Data!")
+                        .forEach(map => {
+                            const li = document.createElement('li');
+                            li.innerText = map.name;
+                            mapsList.appendChild(li);
+                        });
                 } else {
                     mapsList.innerText = "No maps found.";
                 }
