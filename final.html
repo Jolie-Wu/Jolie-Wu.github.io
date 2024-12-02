@@ -155,17 +155,20 @@
 
   <script>
     // API Key
-    const apiKey = 'bearer HDEV-2c5107b5-a06d-49c4-afb2-95a49b71f81f'
-
+    const apiKey = 'HDEV-2c5107b5-a06d-49c4-afb2-95a49b71f81f';
 
     // Fetch game version info
     async function fetchVersion(region) {
       const response = await fetch(`https://api.henrikdev.xyz/valorant/v1/version/${region}`, {
         method: 'GET',
         headers: {
-          'Authorization': apiKey
+          'Authorization': `Bearer ${apiKey}`
         }
       });
+      if (!response.ok) {
+        console.error('Failed to fetch version info:', response.status, response.statusText);
+        return {};
+      }
       return response.json();
     }
 
@@ -174,9 +177,13 @@
       const response = await fetch('https://api.henrikdev.xyz/valorant/v1/content', {
         method: 'GET',
         headers: {
-          'Authorization': apiKey
+          'Authorization': `Bearer ${apiKey}`
         }
       });
+      if (!response.ok) {
+        console.error('Failed to fetch content info:', response.status, response.statusText);
+        return {};
+      }
       return response.json();
     }
 
@@ -184,6 +191,7 @@
     async function displayVersionInfo() {
       const region = 'na'; // Replace with your desired region
       const data = await fetchVersion(region);
+      if (!data || !data.data) return;
       const versionDiv = document.getElementById('version-info');
       versionDiv.innerHTML = `
         <h3>Game Version</h3>
@@ -199,6 +207,7 @@
     // Display game content
     async function displayContentInfo() {
       const data = await fetchContent();
+      if (!data || !data.characters || !data.maps || !data.equips) return;
       const contentDiv = document.getElementById('content-info');
       const characters = data.characters.map(char => `<li>${char.name}</li>`).join('');
       const maps = data.maps.map(map => `<li>${map.name}</li>`).join('');
