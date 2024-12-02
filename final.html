@@ -45,6 +45,30 @@
         nav a:hover {
             color: #ff6772;
         }
+
+        /* Custom styles for the locale dropdown */
+        .locale-dropdown {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background-color: #28293d;
+            border: 1px solid #ff4655;
+            border-radius: 5px;
+        }
+
+        .locale-dropdown select {
+            background-color: #28293d;
+            color: #ffffff;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .locale-dropdown select:focus {
+            outline: none;
+            border-color: #ff4655;
+        }
     </style>
 </head>
 <body onload="initializeApp()">
@@ -56,10 +80,17 @@
                 <a href="#agents" class="nav-link">Agents</a>
                 <a href="#maps" class="nav-link">Maps</a>
                 <a href="#guns" class="nav-link">Guns</a>
-                <a href="#" class="nav-link" data-toggle="modal" data-target="#localeModal">Select Locale</a>
             </div>
         </div>
     </nav>
+
+    <!-- Locale Dropdown -->
+    <div class="locale-dropdown">
+        <label for="locale-select">Locale: </label>
+        <select id="locale-select" onchange="setLocale()">
+            <!-- Options will be dynamically filled -->
+        </select>
+    </div>
 
     <div class="container mt-4">
         <h1 class="text-center mb-4">Valorant App</h1>
@@ -80,29 +111,6 @@
         <div id="guns" class="card p-4 mt-4">
             <h2>Guns (Filtered)</h2>
             <ul id="guns-list" class="mt-3"></ul>
-        </div>
-    </div>
-
-    <!-- Locale Modal -->
-    <div id="localeModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Select Language</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="locale-form">
-                        <label for="locale-select">Choose Locale:</label>
-                        <select id="locale-select" class="form-control">
-                            <!-- Options will be dynamically filled -->
-                        </select>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="setLocale()">Set Locale</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -205,10 +213,11 @@
 
         // Initialize the app by fetching locales and game content
         function initializeApp() {
-            fetchLocales(); // Fetch and populate locales in the modal
+            fetchLocales(); // Fetch and populate locales in the dropdown
             fetchGameContent(); // Fetch initial game content
         }
     </script>
 </body>
 </html>
+
 
