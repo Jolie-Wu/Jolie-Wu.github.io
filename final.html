@@ -1,87 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valorant App</title>
+    <title>Valorant Player Info and Match History</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        pre {
-            background-color: #f8f9fa;
-            padding: 15px;
+        .match-card {
+            border: 1px solid #ddd;
             border-radius: 5px;
-            overflow: auto;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body onload="initializeApp()">
+
+<body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Valorant App</h1>
-        
-        <!-- Platform Status Section -->
-        <div class="mb-5">
-            <h2>Platform Status</h2>
-            <div id="platform-status" class="alert alert-info">Loading platform status...</div>
+        <h1 class="text-center mb-4">Valorant Player Info & Match History</h1>
+
+        <!-- Form Section -->
+        <form id="player-form" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="region" class="form-label">Region</label>
+                    <select id="region" class="form-select" required>
+                        <option value="na">North America</option>
+                        <option value="eu">Europe</option>
+                        <option value="ap">Asia-Pacific</option>
+                        <option value="kr">Korea</option>
+                        <option value="latam">Latin America</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="name" class="form-label">Player Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter player name" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="tag" class="form-label">Tagline</label>
+                    <input type="text" id="tag" class="form-control" placeholder="Enter tagline (e.g., #1234)" required>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-3" onclick="fetchData(event)">Fetch Data</button>
+        </form>
+
+        <!-- Player Info Section -->
+        <div id="player-info" class="d-none mb-4">
+            <h3>Player Information</h3>
+            <p><strong>Name:</strong> <span id="player-name"></span></p>
+            <p><strong>Tag:</strong> <span id="player-tag"></span></p>
+            <p><strong>Region:</strong> <span id="player-region"></span></p>
+            <p><strong>Account Level:</strong> <span id="player-level"></span></p>
         </div>
-        
-        <!-- Game Content Section -->
-        <div>
-            <h2>Game Content</h2>
-            <div id="game-content" class="alert alert-info">Loading game content...</div>
+
+        <!-- Match History Section -->
+        <div id="matches">
+            <h3>Match History</h3>
+            <p class="text-muted">Match history will be displayed here.</p>
         </div>
     </div>
 
     <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript -->
     <script>
-        // Function to fetch and display platform status
-        async function fetchPlatformStatus() {
-            try {
-                const response = await fetch('http://localhost:3000/api/platform-status'); // Adjust URL for deployment
-                if (!response.ok) throw new Error("Failed to fetch platform status");
-                const data = await response.json();
-                document.getElementById('platform-status').classList.remove('alert-info');
-                document.getElementById('platform-status').classList.add('alert-success');
-                document.getElementById('platform-status').innerHTML = `
-                    <h5>Status:</h5>
-                    <pre>${JSON.stringify(data, null, 2)}</pre>
-                `;
-            } catch (error) {
-                console.error('Error fetching platform status:', error);
-                document.getElementById('platform-status').classList.remove('alert-info');
-                document.getElementById('platform-status').classList.add('alert-danger');
-                document.getElementById('platform-status').innerText = 'Failed to load platform status.';
-            }
-        }
+        async function fetchData(event) {
+            event.preventDefault();
 
-        // Function to fetch and display game content
-        async function fetchGameContent() {
-            try {
-                const response = await fetch('http://localhost:3000/api/game-content'); // Adjust URL for deployment
-                if (!response.ok) throw new Error("Failed to fetch game content");
-                const data = await response.json();
-                document.getElementById('game-content').classList.remove('alert-info');
-                document.getElementById('game-content').classList.add('alert-success');
-                document.getElementById('game-content').innerHTML = `
-                    <h5>Content:</h5>
-                    <pre>${JSON.stringify(data, null, 2)}</pre>
-                `;
-            } catch (error) {
-                console.error('Error fetching game content:', error);
-                document.getElementById('game-content').classList.remove('alert-info');
-                document.getElementById('game-content').classList.add('alert-danger');
-                document.getElementById('game-content').innerText = 'Failed to load game content.';
-            }
-        }
+            // Get form inputs
+            const region = document.getElementById('region').value;
+            const name = document.getElementById('name').value;
+            const tag = document.getElementById('tag').value;
 
-        // Initialize the app by fetching all data
-        function initializeApp() {
-            fetchPlatformStatus();
-            fetchGameContent();
+            // API key and URL
+            const apiKey = 'HDEV-2c5107b5-a06d-49c4-afb2-95a49b71f81f'; // Replace with your actual API key
+            const accountUrl = `https://api.henrikdev.xyz/valorant/v1/account/${name}/${tag}`;
+            const matchesUrl = `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${name}/${tag}`;
+
+            // API Headers
+            const headers = {
+                Authorization: apiKey,
+            };
+
+            // Clear existing results
+            const playerInfoDiv = document.getElementById('player-info');
+            const matchesDiv = document.getElementById('matches');
+            playerInfoDiv.classList.add('d-none');
+            matchesDiv.innerHTML = `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>`;
+
+            try {
+                // Fetch player info
+                const playerResponse = await fetch(accountUrl, { headers });
+                const playerData = await playerResponse.json();
+
+                if (playerData.status !== 200) {
+                    matchesDiv.innerHTML = `<p class="text-danger">Error: Unable to fetch player information.</p>`;
+                    return;
+                }
+
+                // Display player info
+                document.getElementById('player-name').textContent = playerData.data.name;
+                document.getElementById('player-tag').textContent = playerData.data.tag;
+                document.getElementById('player-region').textContent = region.toUpperCase();
+                document.getElementById('player-level').textContent = playerData.data.account_level;
+                playerInfoDiv.classList.remove('d-none');
+
+                // Fetch match history
+                const matchResponse = await fetch(matchesUrl, { headers });
+                const matchData = await matchResponse.json();
+
+                if (matchData.status !== 200) {
+                    matchesDiv.innerHTML = `<p class="text-danger">Error: Unable to fetch match history.</p>`;
+                    return;
+                }
+
+                // Display match history
+                matchesDiv.innerHTML = '';
+                matchData.data.forEach(match => {
+                    const matchCard = document.createElement('div');
+                    matchCard.classList.add('match-card');
+                    matchCard.innerHTML = `
+                        <h5>Map: ${match.metadata.map}</h5>
+                        <p><strong>Mode:</strong> ${match.metadata.mode}</p>
+                        <p><strong>Rounds Played:</strong> ${match.metadata.rounds_played}</p>
+                        <p><strong>Start Time:</strong> ${match.metadata.game_start_patched}</p>
+                    `;
+                    matchesDiv.appendChild(matchCard);
+                });
+            } catch (error) {
+                matchesDiv.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
+            }
         }
     </script>
 </body>
+
 </html>
+
