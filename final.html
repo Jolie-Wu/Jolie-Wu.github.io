@@ -46,21 +46,17 @@
             color: #ff6772;
         }
 
-        /* Custom styles for the locale dropdown */
+        /* Custom styles for the locale dropdown in the navbar */
         .locale-dropdown {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 1000;
-            background-color: #28293d;
-            border: 1px solid #ff4655;
-            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            margin-left: auto;
         }
 
         .locale-dropdown select {
             background-color: #28293d;
             color: #ffffff;
-            border: none;
+            border: 1px solid #ff4655;
             padding: 5px;
             border-radius: 5px;
         }
@@ -69,6 +65,22 @@
             outline: none;
             border-color: #ff4655;
         }
+
+        /* Horizontal navbar items */
+        .navbar-nav {
+            margin-left: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .nav-link {
+            color: #ff4655;
+            margin-right: 15px;
+        }
+
+        .nav-link:hover {
+            color: #ff6772;
+        }
     </style>
 </head>
 <body onload="initializeApp()">
@@ -76,21 +88,21 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" style="color: #ffffff;">Valorant App</a>
-            <div>
+            <div class="navbar-nav">
                 <a href="#agents" class="nav-link">Agents</a>
                 <a href="#maps" class="nav-link">Maps</a>
                 <a href="#guns" class="nav-link">Guns</a>
             </div>
+
+            <!-- Locale Dropdown -->
+            <div class="locale-dropdown">
+                <label for="locale-select" style="color: #ffffff; margin-right: 10px;">Locale:</label>
+                <select id="locale-select" onchange="setLocale()">
+                    <!-- Options will be dynamically filled -->
+                </select>
+            </div>
         </div>
     </nav>
-
-    <!-- Locale Dropdown -->
-    <div class="locale-dropdown">
-        <label for="locale-select">Locale: </label>
-        <select id="locale-select" onchange="setLocale()">
-            <!-- Options will be dynamically filled -->
-        </select>
-    </div>
 
     <div class="container mt-4">
         <h1 class="text-center mb-4">Valorant App</h1>
@@ -127,14 +139,18 @@
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
                 
-                // Get the list of locales and populate the select dropdown
+                // Get the list of locales from the 'locales' field and populate the select dropdown
                 const localeSelect = document.getElementById('locale-select');
-                data['locators'].forEach(locale => {
-                    const option = document.createElement('option');
-                    option.value = locale;
-                    option.innerText = locale;
-                    localeSelect.appendChild(option);
-                });
+                if (data['locales'] && Array.isArray(data['locales'])) {
+                    data['locales'].forEach(locale => {
+                        const option = document.createElement('option');
+                        option.value = locale;
+                        option.innerText = locale;
+                        localeSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('No locales found in API response');
+                }
             } catch (error) {
                 console.error('Error fetching locales:', error);
             }
@@ -219,5 +235,6 @@
     </script>
 </body>
 </html>
+
 
 
