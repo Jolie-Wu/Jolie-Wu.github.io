@@ -108,6 +108,7 @@
         function setLocale() {
             const localeSelect = document.getElementById('locale-select');
             selectedLocale = localeSelect.value; // Get the selected locale
+            console.log(`Locale set to: ${selectedLocale}`); // Debugging: Check the selected locale
             fetchGameContent(); // Re-fetch the game content with the selected locale
         }
 
@@ -144,6 +145,8 @@
         // Function to generate the appropriate URL based on the selected locale using switch statement
         function getContentUrl() {
             let apiUrl = '';
+            console.log(`Selected locale: ${selectedLocale}`); // Debugging: Check the selected locale
+
             switch (selectedLocale) {
                 case 'en-US':
                     apiUrl = `https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`;
@@ -168,6 +171,7 @@
         async function fetchGameContent() {
             const apiUrl = getContentUrl();
             try {
+                console.log(`Fetching content from URL: ${apiUrl}`); // Debugging: Check the constructed URL
                 const response = await fetch(apiUrl);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
@@ -237,6 +241,7 @@
     </script>
 </body>
 </html>
+
 
 
 
