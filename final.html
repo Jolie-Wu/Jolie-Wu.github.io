@@ -101,7 +101,7 @@
         // Function to fetch and display platform status
         async function fetchPlatformStatus() {
             try {
-                const response = await fetch(`https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`);
+                const response = await fetch(`https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30   `);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
                 document.getElementById('platform-status').classList.remove('alert-info', 'alert-danger');
@@ -122,34 +122,50 @@
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
 
+                // Debugging: Log the full response to check the structure
+                console.log('API Response:', data);
+
                 // Display Agents
                 const agentsList = document.getElementById('agents-list');
                 agentsList.innerHTML = '';
-                data.characters.forEach(character => {
-                    const li = document.createElement('li');
-                    li.innerText = character.name;
-                    agentsList.appendChild(li);
-                });
+                if (data.characters) {
+                    data.characters.forEach(character => {
+                        const li = document.createElement('li');
+                        li.innerText = character.name || 'Unknown'; // Check for missing data
+                        agentsList.appendChild(li);
+                    });
+                } else {
+                    agentsList.innerText = "No agents found.";
+                }
 
                 // Display Maps
                 const mapsList = document.getElementById('maps-list');
                 mapsList.innerHTML = '';
-                data.maps.forEach(map => {
-                    const li = document.createElement('li');
-                    li.innerText = map.name;
-                    mapsList.appendChild(li);
-                });
+                if (data.maps) {
+                    data.maps.forEach(map => {
+                        const li = document.createElement('li');
+                        li.innerText = map.name || 'Unknown'; // Check for missing data
+                        mapsList.appendChild(li);
+                    });
+                } else {
+                    mapsList.innerText = "No maps found.";
+                }
 
                 // Display Guns
                 const gunsList = document.getElementById('guns-list');
                 gunsList.innerHTML = '';
-                data.guns
-                    .filter(gun => gun.assetName.includes("Standard_Standard_PrimaryAsset_C"))
-                    .forEach(gun => {
-                        const li = document.createElement('li');
-                        li.innerText = gun.name; // Correctly display gun name
-                        gunsList.appendChild(li);
-                    });
+                if (data.guns) {
+                    data.guns
+                        .filter(gun => gun.assetName && gun.assetName.includes("Standard_Standard_PrimaryAsset_C"))
+                        .forEach(gun => {
+                            const li = document.createElement('li');
+                            li.innerText = gun.name || 'Unknown'; // Ensure we have a name
+                            gunsList.appendChild(li);
+                        });
+                } else {
+                    gunsList.innerText = "No guns found.";
+                }
+
             } catch (error) {
                 console.error('Error fetching game content:', error);
             }
@@ -163,6 +179,7 @@
     </script>
 </body>
 </html>
+
 
 
 
