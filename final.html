@@ -45,41 +45,14 @@
         nav a:hover {
             color: #ff6772;
         }
-
-        /* Custom styles for the locale dropdown in the navbar */
         .locale-dropdown {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .locale-dropdown select {
-            background-color: #28293d;
-            color: #ffffff;
-            border: 1px solid #ff4655;
-            padding: 5px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4655;
+            color: #fff;
+            padding: 10px;
             border-radius: 5px;
-        }
-
-        .locale-dropdown select:focus {
-            outline: none;
-            border-color: #ff4655;
-        }
-
-        /* Horizontal navbar items */
-        .navbar-nav {
-            margin-left: auto;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .nav-link {
-            color: #ff4655;
-            margin-right: 15px;
-        }
-
-        .nav-link:hover {
-            color: #ff6772;
         }
     </style>
 </head>
@@ -88,21 +61,20 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" style="color: #ffffff;">Valorant App</a>
-            <div class="navbar-nav">
+            <div class="d-flex">
                 <a href="#agents" class="nav-link">Agents</a>
                 <a href="#maps" class="nav-link">Maps</a>
                 <a href="#guns" class="nav-link">Guns</a>
             </div>
-
-            <!-- Locale Dropdown -->
-            <div class="locale-dropdown">
-                <label for="locale-select" style="color: #ffffff; margin-right: 10px;">Locale:</label>
-                <select id="locale-select" onchange="setLocale()">
-                    <!-- Options will be dynamically filled -->
-                </select>
-            </div>
         </div>
     </nav>
+
+    <!-- Locale Dropdown -->
+    <div class="locale-dropdown">
+        <select id="locale-select" class="form-select" onchange="setLocale()">
+            <!-- Options will be dynamically populated -->
+        </select>
+    </div>
 
     <div class="container mt-4">
         <h1 class="text-center mb-4">Valorant App</h1>
@@ -132,30 +104,6 @@
     <script>
         let selectedLocale = 'en-US'; // Default locale
 
-        // Function to fetch and display the available locales from the platform status endpoint
-        async function fetchLocales() {
-            try {
-                const response = await fetch('https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30');
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-                
-                // Get the list of locales from the 'locales' field and populate the select dropdown
-                const localeSelect = document.getElementById('locale-select');
-                if (data['locales'] && Array.isArray(data['locales'])) {
-                    data['locales'].forEach(locale => {
-                        const option = document.createElement('option');
-                        option.value = locale;
-                        option.innerText = locale;
-                        localeSelect.appendChild(option);
-                    });
-                } else {
-                    console.error('No locales found in API response');
-                }
-            } catch (error) {
-                console.error('Error fetching locales:', error);
-            }
-        }
-
         // Function to set the selected locale
         function setLocale() {
             const localeSelect = document.getElementById('locale-select');
@@ -163,10 +111,64 @@
             fetchGameContent(); // Re-fetch the game content with the selected locale
         }
 
+        // Fetch locales from the platform data API and populate the dropdown
+        async function fetchLocales() {
+            try {
+                const response = await fetch('https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30');
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+
+                // Get the locales from the response
+                const locales = data.locales || [];
+                const localeSelect = document.getElementById('locale-select');
+
+                // Clear existing options
+                localeSelect.innerHTML = '';
+
+                // Populate the dropdown with available locales
+                locales.forEach(locale => {
+                    const option = document.createElement('option');
+                    option.value = locale;
+                    option.innerText = locale;
+                    localeSelect.appendChild(option);
+                });
+
+                // Set the default locale in the dropdown
+                localeSelect.value = selectedLocale;
+
+            } catch (error) {
+                console.error('Error fetching locales:', error);
+            }
+        }
+
+        // Function to generate the appropriate URL based on the selected locale using switch statement
+        function getContentUrl() {
+            let apiUrl = '';
+            switch (selectedLocale) {
+                case 'en-US':
+                    apiUrl = `https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`;
+                    break;
+                case 'ko-KR':
+                    apiUrl = `https://na.api.riotgames.com/val/content/v1/contents?locale=ko-KR&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`;
+                    break;
+                case 'ja-JP':
+                    apiUrl = `https://na.api.riotgames.com/val/content/v1/contents?locale=ja-JP&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`;
+                    break;
+                case 'fr-FR':
+                    apiUrl = `https://na.api.riotgames.com/val/content/v1/contents?locale=fr-FR&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`;
+                    break;
+                default:
+                    apiUrl = `https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`; // Default to en-US if unknown locale
+                    break;
+            }
+            return apiUrl;
+        }
+
         // Function to fetch and display agents, maps, and guns based on the selected locale
         async function fetchGameContent() {
+            const apiUrl = getContentUrl();
             try {
-                const response = await fetch(`https://na.api.riotgames.com/val/content/v1/contents?locale=${selectedLocale}&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`);
+                const response = await fetch(apiUrl);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
 
@@ -230,11 +232,12 @@
         // Initialize the app by fetching locales and game content
         function initializeApp() {
             fetchLocales(); // Fetch and populate locales in the dropdown
-            fetchGameContent(); // Fetch initial game content
+            fetchGameContent(); // Fetch initial game content with default locale
         }
     </script>
 </body>
 </html>
+
 
 
 
