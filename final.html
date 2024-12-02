@@ -30,10 +30,34 @@
         .btn-refresh:hover {
             background-color: #ff6772;
         }
+        nav {
+            background-color: #28293d;
+            padding: 1rem;
+        }
+        nav a {
+            color: #ff4655;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            color: #ff6772;
+        }
     </style>
 </head>
 <body onload="initializeApp()">
-    <div class="container mt-5">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="color: #ffffff;">Valorant App</a>
+            <div>
+                <a href="#agents" class="nav-link">Agents</a>
+                <a href="#maps" class="nav-link">Maps</a>
+                <a href="#guns" class="nav-link">Guns</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
         <h1 class="text-center mb-4">Valorant App</h1>
 
         <!-- Platform Status Section -->
@@ -53,21 +77,37 @@
             </div>
             <div id="game-content" class="alert alert-info mt-3">Loading game content...</div>
         </div>
+
+        <!-- Agents Section -->
+        <div id="agents" class="card p-4 mt-4">
+            <h2>Agents</h2>
+            <ul id="agents-list" class="mt-3"></ul>
+        </div>
+
+        <!-- Maps Section -->
+        <div id="maps" class="card p-4 mt-4">
+            <h2>Maps</h2>
+            <ul id="maps-list" class="mt-3"></ul>
+        </div>
+
+        <!-- Guns Section -->
+        <div id="guns" class="card p-4 mt-4">
+            <h2>Guns</h2>
+            <ul id="guns-list" class="mt-3"></ul>
+        </div>
     </div>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        //const API_KEY = "RGAPI-828ed108-356a-476a-9016-734d79a2ba46"; // Replace with your API key
+        //const API_KEY = "RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30"; // Replace with your API key
         //const REGION = "na"; // Replace with the correct region, e.g., "na", "eu", etc.
 
         // Function to fetch and display platform status
         async function fetchPlatformStatus() {
             try {
-                const response = await fetch(`https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`, {
-                    //headers: { 'X-Riot-Token': API_KEY }
-                });
+                const response = await fetch(`https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
                 document.getElementById('platform-status').classList.remove('alert-info', 'alert-danger');
@@ -81,22 +121,41 @@
             }
         }
 
-        // Function to fetch and display game content
+        // Function to fetch and display agents, maps, and guns
         async function fetchGameContent() {
             try {
-                const response = await fetch(`https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`, {
-                   // headers: { 'X-Riot-Token': API_KEY }
-                });
+                const response = await fetch(`https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-6c61cdbf-404c-472c-b852-3fef109f2c30`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
-                document.getElementById('game-content').classList.remove('alert-info', 'alert-danger');
-                document.getElementById('game-content').classList.add('alert-success');
-                document.getElementById('game-content').innerText = JSON.stringify(data, null, 2);
+
+                // Display Agents
+                const agentsList = document.getElementById('agents-list');
+                agentsList.innerHTML = '';
+                data.characters.forEach(character => {
+                    const li = document.createElement('li');
+                    li.innerText = character.name;
+                    agentsList.appendChild(li);
+                });
+
+                // Display Maps
+                const mapsList = document.getElementById('maps-list');
+                mapsList.innerHTML = '';
+                data.maps.forEach(map => {
+                    const li = document.createElement('li');
+                    li.innerText = map.name;
+                    mapsList.appendChild(li);
+                });
+
+                // Display Guns
+                const gunsList = document.getElementById('guns-list');
+                gunsList.innerHTML = '';
+                data.weapons.forEach(weapon => {
+                    const li = document.createElement('li');
+                    li.innerText = weapon.name;
+                    gunsList.appendChild(li);
+                });
             } catch (error) {
                 console.error('Error fetching game content:', error);
-                document.getElementById('game-content').classList.remove('alert-info', 'alert-success');
-                document.getElementById('game-content').classList.add('alert-danger');
-                document.getElementById('game-content').innerText = 'Failed to load game content.';
             }
         }
 
@@ -108,5 +167,6 @@
     </script>
 </body>
 </html>
+
 
 
