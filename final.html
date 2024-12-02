@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body onload="initializeApp()">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Valorant App</h1>
+        
+        <!-- Platform Status Section -->
+        <div class="mb-5">
+            <h2>Platform Status</h2>
+            <div id="platform-status" class="alert alert-info">Loading platform status...</div>
+        </div>
+        
+        <!-- Game Content Section -->
+        <div>
+            <h2>Game Content</h2>
+            <div id="game-content" class="alert alert-info">Loading game content...</div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Function to fetch and display platform status
+        async function fetchPlatformStatus() {
+            try {
+                const response = await fetch('http://localhost:3000/api/platform-status'); // Adjust URL for deployment
+                if (!response.ok) throw new Error("Failed to fetch platform status");
+                const data = await response.json();
+                document.getElementById('platform-status').classList.remove('alert-info');
+                document.getElementById('platform-status').classList.add('alert-success');
+                document.getElementById('platform-status').innerHTML = `
+                    <h5>Status:</h5>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Error fetching platform status:', error);
+                document.getElementById('platform-status').classList.remove('alert-info');
+                document.getElementById('platform-status').classList.add('alert-danger');
+                document.getElementById('platform-status').innerText = 'Failed to load platform status.';
+            }
+        }
+
+        // Function to fetch and display game content
+        async function fetchGameContent() {
+            try {
+                const response = await fetch('http://localhost:3000/api/game-content'); // Adjust URL for deployment
+                if (!response.ok) throw new Error("Failed to fetch game content");
+                const data = await response.json();
+                document.getElementById('game-content').classList.remove('alert-info');
+                document.getElementById('game-content').classList.add('alert-success');
+                document.getElementById('game-content').innerHTML = `
+                    <h5>Content:</h5>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Error fetching game content:', error);
+                document.getElementById('game-content').classList.remove('alert-info');
+                document.getElementById('game-content').classList.add('alert-danger');
+                document.getElementById('game-content').innerText = 'Failed to load game content.';
+            }
+        }
+
+        // Initialize the app by fetching all data
+        function initializeApp() {
+            fetchPlatformStatus();
+            fetchGameContent();
+        }
+    </script>
+</body>
+</html>
