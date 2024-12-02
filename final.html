@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +83,6 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // Fetch and display platform status
         async function fetchPlatformStatus() {
             const region = document.getElementById('region-select').value;
             try {
@@ -105,26 +103,25 @@
             }
         }
 
-        // Fetch and display game content
         async function fetchGameContent() {
             try {
                 const response = await fetch('http://localhost:3000/api/game-content');
                 if (!response.ok) throw new Error("Failed to fetch game content");
                 const data = await response.json();
-                
+
                 // Populate agents
                 document.getElementById('agents-content').innerHTML = `
-                    <ul>${data.agents.map(agent => `<li>${agent.displayName}</li>`).join('')}</ul>
+                    <ul>${(data.agents || []).map(agent => `<li>${agent.displayName || 'Unknown'}</li>`).join('')}</ul>
                 `;
 
                 // Populate maps
                 document.getElementById('maps-content').innerHTML = `
-                    <ul>${data.maps.map(map => `<li>${map.displayName}</li>`).join('')}</ul>
+                    <ul>${(data.maps || []).map(map => `<li>${map.displayName || 'Unknown'}</li>`).join('')}</ul>
                 `;
 
                 // Populate guns
                 document.getElementById('guns-content').innerHTML = `
-                    <ul>${data.guns.map(gun => `<li>${gun.displayName}</li>`).join('')}</ul>
+                    <ul>${(data.guns || []).map(gun => `<li>${gun.displayName || 'Unknown'}</li>`).join('')}</ul>
                 `;
             } catch (error) {
                 console.error('Error fetching game content:', error);
