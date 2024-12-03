@@ -33,35 +33,9 @@
         .btn-refresh:hover {
             background-color: #ff6772;
         }
-        nav {
-            background-color: #28293d;
-            padding: 1rem;
-        }
-        nav a {
-            color: #ff4655;
-            margin-right: 15px;
-            text-decoration: none;
-        }
-        nav a:hover {
-            color: #ff6772;
-        }
     </style>
 </head>
 <body onload="initializeApp()">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="color: #ffffff;">Valorant App</a>
-            <div class="d-flex">
-                <a href="#agents" class="nav-link">Agents</a>
-                <a href="#maps" class="nav-link">Maps</a>
-                <a href="#guns" class="nav-link">Guns</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Maintenance Alert -->
-    <div id="maintenance-alert" class="alert alert-info" style="display: none; margin-top: 20px;"></div>
 
     <div class="container mt-4">
         <h1 class="text-center mb-4">Valorant App</h1>
@@ -83,6 +57,14 @@
             <h2>Guns (Filtered)</h2>
             <ul id="guns-list" class="mt-3"></ul>
         </div>
+
+        <!-- Maintenance Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-refresh" onclick="fetchMaintenanceInfo()">Check System Status</button>
+        </div>
+
+        <!-- Maintenance Alert -->
+        <div id="maintenance-alert" class="alert alert-info mt-4" style="display: none;"></div>
     </div>
 
     <!-- Bootstrap JS Bundle -->
@@ -118,7 +100,7 @@
                     maintenanceAlert.style.display = 'block';
                 } else {
                     maintenanceAlert.innerHTML = `
-                        <strong>System Status:</strong> There is currently no maintenance or incidents.
+                        <strong>System Status:</strong> There is currently no maintenance or incidents on Valorant.
                     `;
                     maintenanceAlert.style.display = 'block';
                 }
@@ -190,9 +172,9 @@
 
         // Initialize the app
         function initializeApp() {
-            fetchMaintenanceInfo(); // Fetch maintenance and incident info
             fetchGameContent(); // Fetch agents, maps, and guns
         }
     </script>
 </body>
 </html>
+
