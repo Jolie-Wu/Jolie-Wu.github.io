@@ -11,12 +11,29 @@
             background-color: #1e1e2f;
             color: #ffffff;
         }
-        .container-fluid {
-            height: 100vh;
+        .navbar {
+            margin-bottom: 20px;
         }
-        .section-header {
-            color: #ff4655;
-            margin-bottom: 10px;
+        .container-fluid {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: 20px;
+        }
+        .sidebar {
+            flex: 2;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            border-left: 2px solid #ff4655;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        h2 {
+            color: #ff4655; /* Valorant's signature red */
         }
         .list-item {
             cursor: pointer;
@@ -39,59 +56,77 @@
         .btn-refresh:hover {
             background-color: #ff6772;
         }
-        .details {
-            background-color: #1e1e2f;
-            border-left: 2px solid #ff4655;
-            padding: 20px;
-            height: 100%;
-            position: sticky;
-            top: 0;
-            max-height: 100vh; /* Keeps it within viewport height */
-            overflow-y: auto;
+        .section-header {
+            color: #ff4655;
+            margin-bottom: 10px;
         }
-        .details h2 {
-            margin-top: 0;
+        #details {
+            height: 100%;
+            overflow-y: auto;
         }
     </style>
 </head>
 <body onload="initializeApp()">
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28293d;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Valorant App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#agents">Agents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#maps">Maps</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#guns">Guns</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-link" onclick="fetchMaintenanceInfo()">Check Maintenance</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container-fluid">
-        <div class="row flex-grow-1">
-            <!-- Sidebar (Game Info, Agents, Maps, Guns) -->
-            <div class="col-md-8 col-lg-9 bg-dark p-4 overflow-auto">
-                <div id="game-info">
-                    <h2 class="section-header">Game Info</h2>
-                    <p>
-                        Valorant is a free-to-play first-person tactical hero shooter developed by Riot Games. 
-                        Released in 2020, it features 5v5 multiplayer matches where teams compete in objective-based gameplay.
-                    </p>
-                </div>
-
-                <div id="agents">
-                    <h2 class="section-header">Agents</h2>
-                    <div id="agents-list"></div>
-                </div>
-
-                <div id="maps" class="mt-4">
-                    <h2 class="section-header">Maps</h2>
-                    <div id="maps-list"></div>
-                </div>
-
-                <div id="guns" class="mt-4">
-                    <h2 class="section-header">Guns (Filtered)</h2>
-                    <div id="guns-list"></div>
-                </div>
-
-                <button class="btn btn-refresh" onclick="fetchMaintenanceInfo()">Check System Status</button>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div id="game-info">
+                <h2 class="section-header">Game Info</h2>
+                <p>
+                    Valorant is a free-to-play first-person tactical hero shooter developed by Riot Games. 
+                    Released in 2020, it features 5v5 multiplayer matches where teams compete in objective-based gameplay.
+                </p>
             </div>
 
-            <!-- Main Content (Details Section) -->
-            <div class="col-md-4 col-lg-3 details">
-                <div id="details">
-                    <!-- This is where the dynamic details will appear. -->
-                </div>
+            <div id="agents">
+                <h2 class="section-header">Agents</h2>
+                <div id="agents-list"></div>
             </div>
+
+            <div id="maps" class="mt-4">
+                <h2 class="section-header">Maps</h2>
+                <div id="maps-list"></div>
+            </div>
+
+            <div id="guns" class="mt-4">
+                <h2 class="section-header">Guns (Filtered)</h2>
+                <div id="guns-list"></div>
+            </div>
+
+            <button class="btn btn-refresh" onclick="fetchMaintenanceInfo()">Check System Status</button>
+        </div>
+
+        <!-- Main Content (Details Section) -->
+        <div class="content" id="details">
+            <h2>Details</h2>
+            <p>Select an item from the list to see more information here.</p>
         </div>
     </div>
 
@@ -203,3 +238,4 @@
     </script>
 </body>
 </html>
+
