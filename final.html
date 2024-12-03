@@ -11,14 +11,9 @@
             background-color: #1e1e2f;
             color: #ffffff;
         }
-        .card {
-            background-color: #28293d;
-            border: none;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        .card h2 {
+        .section-header {
             color: #ff4655; /* Valorant's signature red */
+            margin-top: 20px;
         }
         ul {
             color: #ffffff; /* Ensure list font is white */
@@ -31,6 +26,9 @@
         .btn-refresh:hover {
             background-color: #ff6772;
         }
+        #game-info {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body onload="initializeApp()">
@@ -39,8 +37,8 @@
         <h1 class="text-center my-4">Valorant App</h1>
 
         <!-- Game Info Section -->
-        <div id="game-info" class="card p-4">
-            <h2>Game Info</h2>
+        <div id="game-info">
+            <h2 class="section-header">Game Info</h2>
             <p>
                 Valorant is a free-to-play first-person tactical hero shooter developed by Riot Games. 
                 Released in 2020, it features 5v5 multiplayer matches where teams compete in objective-based gameplay.
@@ -54,20 +52,20 @@
         </div>
 
         <!-- Agents Section -->
-        <div id="agents" class="card p-4">
-            <h2>Agents</h2>
+        <div id="agents">
+            <h2 class="section-header">Agents</h2>
             <ul id="agents-list" class="mt-3"></ul>
         </div>
 
         <!-- Maps Section -->
-        <div id="maps" class="card p-4">
-            <h2>Maps</h2>
+        <div id="maps" class="mt-4">
+            <h2 class="section-header">Maps</h2>
             <ul id="maps-list" class="mt-3"></ul>
         </div>
 
         <!-- Guns Section -->
-        <div id="guns" class="card p-4">
-            <h2>Guns (Filtered)</h2>
+        <div id="guns" class="mt-4">
+            <h2 class="section-header">Guns (Filtered)</h2>
             <ul id="guns-list" class="mt-3"></ul>
         </div>
 
@@ -190,4 +188,3 @@
     </script>
 </body>
 </html>
-
