@@ -11,71 +11,88 @@
             background-color: #1e1e2f;
             color: #ffffff;
         }
-        .section-header {
-            color: #ff4655; /* Valorant's signature red */
-            margin-top: 20px;
+        .container-fluid {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            height: 100vh;
+            gap: 20px;
         }
-        ul {
-            color: #ffffff; /* Ensure list font is white */
+        .sidebar {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .content {
+            flex: 2;
+            padding: 20px;
+            border-left: 2px solid #ff4655;
+        }
+        h2 {
+            color: #ff4655; /* Valorant's signature red */
+        }
+        .list-item {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #28293d;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        .list-item:hover {
+            background-color: #ff4655;
+            color: #ffffff;
         }
         .btn-refresh {
             background-color: #ff4655;
             color: #fff;
             border: none;
+            margin-top: 20px;
         }
         .btn-refresh:hover {
             background-color: #ff6772;
         }
-        #game-info {
-            margin-bottom: 20px;
+        .section-header {
+            color: #ff4655;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body onload="initializeApp()">
 
     <div class="container-fluid">
-        <h1 class="text-center my-4">Valorant App</h1>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div id="game-info">
+                <h2 class="section-header">Game Info</h2>
+                <p>
+                    Valorant is a free-to-play first-person tactical hero shooter developed by Riot Games. 
+                    Released in 2020, it features 5v5 multiplayer matches where teams compete in objective-based gameplay.
+                </p>
+            </div>
 
-        <!-- Game Info Section -->
-        <div id="game-info">
-            <h2 class="section-header">Game Info</h2>
-            <p>
-                Valorant is a free-to-play first-person tactical hero shooter developed by Riot Games. 
-                Released in 2020, it features 5v5 multiplayer matches where teams compete in objective-based gameplay.
-            </p>
-            <ul>
-                <li><strong>Developer:</strong> Riot Games</li>
-                <li><strong>Release Year:</strong> 2020</li>
-                <li><strong>Platforms:</strong> Microsoft Windows</li>
-                <li><strong>Genre:</strong> Tactical Shooter</li>
-            </ul>
-        </div>
+            <div id="agents">
+                <h2 class="section-header">Agents</h2>
+                <div id="agents-list"></div>
+            </div>
 
-        <!-- Agents Section -->
-        <div id="agents">
-            <h2 class="section-header">Agents</h2>
-            <ul id="agents-list" class="mt-3"></ul>
-        </div>
+            <div id="maps" class="mt-4">
+                <h2 class="section-header">Maps</h2>
+                <div id="maps-list"></div>
+            </div>
 
-        <!-- Maps Section -->
-        <div id="maps" class="mt-4">
-            <h2 class="section-header">Maps</h2>
-            <ul id="maps-list" class="mt-3"></ul>
-        </div>
+            <div id="guns" class="mt-4">
+                <h2 class="section-header">Guns (Filtered)</h2>
+                <div id="guns-list"></div>
+            </div>
 
-        <!-- Guns Section -->
-        <div id="guns" class="mt-4">
-            <h2 class="section-header">Guns (Filtered)</h2>
-            <ul id="guns-list" class="mt-3"></ul>
-        </div>
-
-        <!-- Maintenance Button -->
-        <div class="text-center my-4">
             <button class="btn btn-refresh" onclick="fetchMaintenanceInfo()">Check System Status</button>
         </div>
 
-        <!-- Maintenance Alert -->
-        <div id="maintenance-alert" class="alert alert-info text-center" style="display: none;"></div>
+        <!-- Main Content -->
+        <div class="content" id="details">
+            <h2>Details</h2>
+            <p>Select an item from the list to see more information here.</p>
+        </div>
     </div>
 
     <!-- Bootstrap JS Bundle -->
@@ -91,29 +108,25 @@
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
 
-                // Get the maintenance and incident data
                 const maintenanceEvents = data.maintenances || [];
                 const incidents = data.incidents || [];
-                const maintenanceAlert = document.getElementById('maintenance-alert');
+                const maintenanceAlert = document.getElementById('details');
 
-                // Determine the appropriate message
                 if (maintenanceEvents.length > 0) {
-                    const event = maintenanceEvents[0];
                     maintenanceAlert.innerHTML = `
-                        <strong>Maintenance Notice:</strong> ${event.titles && event.titles[0]?.content ? event.titles[0].content : "Maintenance is ongoing. Check back later!"}
+                        <h2>Maintenance Notice</h2>
+                        <p>${maintenanceEvents[0].titles?.[0]?.content || "Maintenance is ongoing. Check back later!"}</p>
                     `;
-                    maintenanceAlert.style.display = 'block';
                 } else if (incidents.length > 0) {
-                    const incident = incidents[0];
                     maintenanceAlert.innerHTML = `
-                        <strong>Incident Report:</strong> ${incident.titles && incident.titles[0]?.content ? incident.titles[0].content : "An incident is being investigated. Please check back for updates."}
+                        <h2>Incident Report</h2>
+                        <p>${incidents[0].titles?.[0]?.content || "An incident is being investigated. Please check back for updates."}</p>
                     `;
-                    maintenanceAlert.style.display = 'block';
                 } else {
                     maintenanceAlert.innerHTML = `
-                        <strong>System Status:</strong> There is currently no maintenance or incidents on Valorant.
+                        <h2>System Status</h2>
+                        <p>There is currently no maintenance or incidents on Valorant.</p>
                     `;
-                    maintenanceAlert.style.display = 'block';
                 }
             } catch (error) {
                 console.error('Error fetching maintenance info:', error);
@@ -127,64 +140,67 @@
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
 
-                // Display Agents
+                // Populate Agents
                 const agentsList = document.getElementById('agents-list');
-                agentsList.innerHTML = '';
                 if (data.characters) {
                     data.characters
                         .filter(character => character.name && character.name !== "Null UI Data!")
                         .forEach(character => {
-                            const li = document.createElement('li');
-                            li.innerText = character.name;
-                            agentsList.appendChild(li);
+                            const div = document.createElement('div');
+                            div.className = 'list-item';
+                            div.innerText = character.name;
+                            div.onclick = () => showDetails(`Agent: ${character.name}`);
+                            agentsList.appendChild(div);
                         });
-                } else {
-                    agentsList.innerText = "No agents found.";
                 }
 
-                // Display Maps
+                // Populate Maps
                 const mapsList = document.getElementById('maps-list');
-                mapsList.innerHTML = '';
                 if (data.maps) {
                     data.maps
                         .filter(map => map.name && map.name !== "Null UI Data!")
                         .forEach(map => {
-                            const li = document.createElement('li');
-                            li.innerText = map.name;
-                            mapsList.appendChild(li);
+                            const div = document.createElement('div');
+                            div.className = 'list-item';
+                            div.innerText = map.name;
+                            div.onclick = () => showDetails(`Map: ${map.name}`);
+                            mapsList.appendChild(div);
                         });
-                } else {
-                    mapsList.innerText = "No maps found.";
                 }
 
-                // Display Guns (Filtered Chromas)
+                // Populate Guns (Filtered Chromas)
                 const gunsList = document.getElementById('guns-list');
-                gunsList.innerHTML = '';
                 if (data.chromas) {
                     const filteredGuns = data.chromas.filter(
                         chroma => chroma.assetName && chroma.assetName.includes("Standard_Standard_PrimaryAsset_C")
                     );
-                    if (filteredGuns.length > 0) {
-                        filteredGuns.forEach(chroma => {
-                            const li = document.createElement('li');
-                            li.innerText = chroma.name || 'Unknown'; // Ensure we have a name
-                            gunsList.appendChild(li);
-                        });
-                    } else {
-                        gunsList.innerText = "No guns found with the specified filter.";
-                    }
-                } else {
-                    gunsList.innerText = "No guns found.";
+                    filteredGuns.forEach(chroma => {
+                        const div = document.createElement('div');
+                        div.className = 'list-item';
+                        div.innerText = chroma.name || 'Unknown';
+                        div.onclick = () => showDetails(`Gun: ${chroma.name || 'Unknown'}`);
+                        gunsList.appendChild(div);
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching game content:', error);
             }
         }
 
+        // Function to show details in the right-hand section
+        function showDetails(detailText) {
+            const details = document.getElementById('details');
+            details.innerHTML = `
+                <h2>Details</h2>
+                <p>${detailText}</p>
+            `;
+        }
+
         // Initialize the app
         function initializeApp() {
-            fetchGameContent(); // Fetch agents, maps, and guns
+            fetchGameContent();
         }
     </script>
 </body>
 </html>
+
