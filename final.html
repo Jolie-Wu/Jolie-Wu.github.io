@@ -216,58 +216,71 @@
         }
 
         // Function to fetch and display agents, maps, and guns
-        async function fetchGameContent() {
-            try {
-                const response = await fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3');
-                if (!response.ok) throw new Error("HTTP error! Status: " + response.status);
-                const data = await response.json();
+        // Function to fetch and display agents, maps, and guns
+async function fetchGameContent() {
+    try {
+        const response = await fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3');
+        if (!response.ok) throw new Error("HTTP error! Status: " + response.status);
+        const data = await response.json();
 
-                // Populate Agents
-                const agentsList = document.getElementById('agents-list');
-                if (data.characters) {
-                    data.characters
-                        .filter(character => character.name && character.name !== "Null UI Data!")
-                        .forEach(character => {
-                            const div = document.createElement('div');
-                            div.className = 'list-item';
-                            div.innerText = character.name;
-                            div.onclick = function() { showDetails('agents', character.name); };
-                            agentsList.appendChild(div);
-                        });
-                }
-
-                // Populate Maps
-                const mapsList = document.getElementById('maps-list');
-                if (data.maps) {
-                    data.maps
-                        .filter(map => map.name && map.name !== "Null UI Data!")
-                        .forEach(map => {
-                            const div = document.createElement('div');
-                            div.className = 'list-item';
-                            div.innerText = map.name;
-                            div.onclick = function() { showDetails('maps', map.name); };
-                            mapsList.appendChild(div);
-                        });
-                }
-
-                // Populate Guns (Filtered Chromas)
-                const gunsList = document.getElementById('guns-list');
-                if (data.chromas) {
-                    const filteredGuns = data.chromas.filter(
-                        chroma => chroma.assetName && chroma.assetName.includes("Standard_Standard_PrimaryAsset_C")
-                    );
-                    filteredGuns.forEach(chroma => {
-                        const div = document.createElement('div');
-                        div.className = 'list-item';
-                        div.innerText = chroma.name || 'Unknown';
-                        div.onclick = function() { showDetails('guns', chroma.name || 'Unknown'); };
-                        gunsList.appendChild(div);
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching game content:', error);
-            }
+        // Populate Agents
+        const agentsList = document.getElementById('agents-list');
+        if (data.characters) {
+            data.characters
+                .filter(character => character.name && character.name !== "Null UI Data!")
+                .forEach(character => {
+                    const div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.innerText = character.name;
+                    div.onclick = function() { showDetails('agents', character.name); };
+                    agentsList.appendChild(div);
+                });
         }
+
+        // Populate Maps
+        const mapsList = document.getElementById('maps-list');
+        if (data.maps) {
+            // Remove duplicates like "The Range"
+            const uniqueMaps = [];
+            const mapNames = new Set();  // Set to keep track of seen maps
+
+            data.maps
+                .filter(map => map.name && map.name !== "Null UI Data!")
+                .forEach(map => {
+                    if (!mapNames.has(map.name)) {
+                        uniqueMaps.push(map);
+                        mapNames.add(map.name);
+                    }
+                });
+
+            uniqueMaps.forEach(map => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerText = map.name;
+                div.onclick = function() { showDetails('maps', map.name); };
+                mapsList.appendChild(div);
+            });
+        }
+
+        // Populate Guns (Filtered Chromas)
+        const gunsList = document.getElementById('guns-list');
+        if (data.chromas) {
+            const filteredGuns = data.chromas.filter(
+                chroma => chroma.assetName && chroma.assetName.includes("Standard_Standard_PrimaryAsset_C")
+            );
+            filteredGuns.forEach(chroma => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerText = chroma.name || 'Unknown';
+                div.onclick = function() { showDetails('guns', chroma.name || 'Unknown'); };
+                gunsList.appendChild(div);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching game content:', error);
+    }
+}
+
 
         // Function to show details in the right-hand section
         function showDetails(category, itemName) {
