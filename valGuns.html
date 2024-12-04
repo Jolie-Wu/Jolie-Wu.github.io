@@ -23,7 +23,7 @@
     </nav>
     
     <div class="container my-4">
-        <h2 class="background-image">Guns</h2>
+        <h2>Guns</h2>
         <div class="accordion" id="accordionExample"></div>
     </div>
     <script>
@@ -252,12 +252,7 @@
 
                     accordionItem.innerHTML = `
                         <h2 class="accordion-header" id="heading${index}">
-                            <button class="accordion-button collapsed" 
-                                type="button" 
-                                data-bs-toggle="collapse" 
-                                data-bs-target="#collapse${index}" 
-                                aria-expanded="false" 
-                                aria-controls="collapse${index}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
                                 ${gunName}
                             </button>
                         </h2>
