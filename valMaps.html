@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Valorant</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #15163b;">
+        <a class="navbar-brand  text-white" href="valhomepage.html">Valorant</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link text-white" href="valAgents.html">Agents</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="valMaps.html">Maps</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="valGuns.html">Guns</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+
+    <div class="container my-4">
+        <h2>Maps</h2>
+        <div class="accordion" id="accordionExample"></div>
+    </div>
+
+    <script>
+        const detailsData = {
+            maps: {
+                "Ascent": {
+                    image: "agent/Ascent.jpg",
+                    description: "Ascent features a central open area that both teams can use to secure key positions.",
+                    sites: 2,
+                    location: "Venice, Italy",
+                    coordinates: "45°26’15” N, 12°20’9″ E",
+                    patch: "1.0"
+                },
+                "Split": {
+                    image: "agent/split.jpg",
+                    description: "Split is a verticality-heavy map with multiple high ground and low ground positions.",
+                    sites: 2,  
+                    location: "Tokyo, Japan",
+                    coordinates:"35°41’23” N, 139°41’32” E",
+                    patch: "Beta"
+                },
+                "Fracture": {
+                    image: "agent/Fracture.jpg",
+                    description: "Fracture is a unique map with a central zip line, offering multiple rotation options.",
+                    sites: 2,  
+                    location: "Santa Fe County, New Mexico, USA",
+                    coordinates:"35°48’18” N, 106°08’19” W",
+                    patch: "3.0"
+                },
+                "Bind": {
+                    image: "agent/Bind.jpg",
+                    description: "Bind offers unique teleporters that allow for strategic rotation and flanking.",
+                    sites: 2,  
+                    location: "Fez, Morocco",
+                    coordinates:"34°2’0″ N, 6°51’0″ W",
+                    patch: "Beta"
+                },
+                "Breeze": {
+                    image: "agent/Breeze.jpg",
+                    description: "Breeze is a wide, open map with desert elements, offering long sightlines and open spaces.",
+                    sites: 2,  
+                    location: "Bahamas, Caribbean",
+                    coordinates:"26°11’06” N, 71°10’31” W",
+                    patch: "2.08"
+                },
+                "District": {
+                    image: "agent/District.jpg",
+                    description: "District is an industrial-themed map with tight corners and close-quarters combat areas.",
+                    sites: 0,  
+                    location: "Split",
+                    coordinates:"N/A",
+                    patch: "7.0"
+                },
+                "Kasbah": {
+                    image: "agent/Kasbah.jpg",
+                    description: "Kasbah features narrow streets and tight corners, ideal for close-range engagements.",
+                    sites: 0,  
+                    location: "Bind",
+                    coordinates:"N/A",
+                    patch: "7.0"
+                },
+                "Drift": {
+                    image: "agent/Drift.jpg",
+                    description: "Drift is a futuristic map set in a high-tech floating city with intense mid-range fights.",
+                    sites: 0,  
+                    location: "Thailand",
+                    coordinates:"N/A",
+                    patch: "7.12"
+                },
+                "Glitch": {
+                    image: "agent/Glitch.jpg",
+                    description: "Glitch is a virtual realm map designed with high-tech structures and digital environments.",
+                    sites: 0,  
+                    location: "Haven/Sunset",
+                    coordinates:"N/A",
+                    patch: "9.08"
+                },
+                "Piazza": {
+                    image: "agent/Piazza.jpg",
+                    description: "Piazza features an open central area with wide lanes and various entry points to bomb sites.",
+                    sites: 0,  
+                    location: "Ascent",
+                    coordinates:"N/A",
+                    patch: "7.0"
+                },
+                "Abyss": {
+                    image: "agent/Abyss.jpg",
+                    description: "Abyss is a dark, underwater map filled with dangerous currents and tight corridors.",
+                    sites: 2,  
+                    location: "Norway, Sor-Jan Mayen",
+                    coordinates:"70°50’09” N 9°00’42” W",
+                    patch: "8.11"
+                },
+                "Lotus": {
+                    image: "agent/Lotus.jpg",
+                    description: "Lotus features three bomb sites and dynamic layouts with Indian temple ruins and lush greenery.",
+                    sites: 3,  
+                    location: "Western Ghats, India",
+                    coordinates:"4°07’03″N 74°53’21″E",
+                    patch: "6.0"
+                },
+                "Sunset": {
+                    image: "agent/Sunset.jpg",
+                    description: "Sunset features wide-open areas and long sightlines, ideal for long-range duels.",
+                    sites: 2,  
+                    location: "Los Angeles, California, USA",
+                    coordinates:"4°07’03″N 74°53’21″E",
+                    patch: "7.04"
+                },
+                "Basic Training": {
+                    image: "agent/Range.jpg",
+                    description: "Basic Training is a simple map used for teaching players the fundamentals of Valorant.",
+                    sites: 0,
+                    location: "The Range",
+                    coordinates:"N/A",
+                    patch: "Beta"
+                },
+                "Pearl": {
+                    image: "agent/Pearl.jpg",
+                    description: "Pearl is set in an underwater city with tight corridors and strategic sightlines.",
+                    sites: 2,  
+                    location: "Lisbon, Portugal",
+                    coordinates:"38°42’43″N, 9°08’27″W",
+                    patch: "5.0"
+                },
+                "Icebox": {
+                    image: "agent/icebox.jpg",
+                    description: "Icebox is a tight, vertical map with many elevated areas and tight corridors.",
+                    sites: 2,  
+                    location: "Antarctica",
+                    coordinates:"76°44’0″ N, 149°30’0″ E",
+                    patch: "1.10"
+                },
+                "The Range": {
+                    image: "agent/Range.jpg",
+                    description: "The Range is a map designed for players to practice shooting and other mechanics.",
+                    sites: 0,
+                    location: "Venice, Italy",
+                    coordinates:"45°26’55” N 12°20’9″ E",
+                    patch: "Beta"
+                },
+                "Haven": {
+                    image: "agent/Haven.jpg",
+                    description: "Haven is a unique map with three bomb sites, challenging players to control the entire map.",
+                    sites: 3,  
+                    location: "Tehran, Iran",
+                    coordinates:"27°28’0″ N, 89°38’30” E",
+                    patch: "Beta"
+                }
+            }
+        };
+
+        async function fetchMaps() {
+            const accordionContainer = document.getElementById('accordionExample');
+            const response = await fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-bb425f67-589f-4d28-aed1-04fb210b35cf');
+            const data = await response.json();
+            const maps = data.maps;
+
+            let theMaps = {};
+            let accordionHTML = "";
+
+            maps.forEach((map, index) => {
+                const mapName = map.name;
+
+                if (mapName === "Null UI Data!" || theMaps[mapName]) {
+                    return;
+                }
+
+                theMaps[mapName] = true;
+
+                // Assuming detailsData.maps is available; ensure it exists
+                const mapDetail = detailsData && detailsData.maps && detailsData.maps[mapName] || {
+                    description: "No description available.",
+                    image: "agent/.jpg",  // Placeholder image
+                    sites: 0,
+                    location: "Unknown",
+                    coordinates: "N/A",
+                    patch: "N/A"
+                };
+
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'accordion-item';
+
+                accordionItem.innerHTML = `
+                    <h2 class="accordion-header" id="heading${index}">
+                        <button class="accordion-button ${index === 0 ? "" : "collapsed"}" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#collapse${index}" 
+                            aria-expanded="${index === 0 ? "true" : "false"}" 
+                            aria-controls="collapse${index}">
+                            ${mapName}
+                        </button>
+                    </h2>
+                    <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? "show" : ""}" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <img src="${mapDetail.image}" alt="${mapName}"  class="img-fluid mb-3" />
+                            <p><strong>Description:</strong> ${mapDetail.description}</p>
+                            <p><strong>Bomb Sites:</strong> ${mapDetail.sites}</p>
+                            <p><strong>Location:</strong> ${mapDetail.location}</p>
+                            <p><strong>Coordinates:</strong> ${mapDetail.coordinates}</p>
+                            <p><strong>Patch:</strong> ${mapDetail.patch}</p>
+                        </div>
+                    </div>
+                `;
+
+                accordionContainer.appendChild(accordionItem);
+            });
+        }
+
+        fetchMaps();
+    </script>
+
+</body>
+</html>
