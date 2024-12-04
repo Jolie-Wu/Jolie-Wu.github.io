@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valorant App</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -33,7 +32,7 @@
             overflow-y: auto;
         }
         h2 {
-            color: #ff4655; /* Valorant's signature red */
+            color: #ff4655;
         }
         .list-item {
             cursor: pointer;
@@ -63,16 +62,6 @@
         #details {
             height: 100%;
             overflow-y: auto;
-        }
-        .ability-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .ability-item {
-            background-color: #3c3f56;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
         }
     </style>
 </head>
@@ -105,16 +94,7 @@
     </nav>
 
     <div class="container-fluid">
-        <!-- Sidebar -->
         <div class="sidebar">
-            <div id="game-info">
-                <h2 class="section-header">Game Info</h2>
-                <p>
-                    Valorant is a free-to-play first-person tactical hero shooter developed by Riot Games. 
-                    Released in 2020, it features 5v5 multiplayer matches where teams compete in objective-based gameplay.
-                </p>
-            </div>
-
             <div id="agents">
                 <h2 class="section-header">Agents</h2>
                 <div id="agents-list"></div>
@@ -126,192 +106,115 @@
             </div>
 
             <div id="guns" class="mt-4">
-                <h2 class="section-header">Guns (Filtered)</h2>
+                <h2 class="section-header">Guns</h2>
                 <div id="guns-list"></div>
             </div>
 
             <button class="btn btn-refresh" onclick="fetchMaintenanceInfo()">Check System Status</button>
         </div>
 
-        <!-- Main Content (Details Section) -->
         <div class="content" id="details">
             <h2>Details</h2>
             <p>Select an item from the list to see more information here.</p>
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        const detailsData = {
-            agents: {
-                "Jett": {
-                    image: "path/to/jett-image.jpg", // Replace with the actual path to the image
-                    description: "Jett is a nimble duelist, adept at taking high risks and swiftly retreating to safety.",
-                    abilities: [
-                        { name: "Cloudburst", description: "Jett instantly blows a cloud of smoke to obscure vision." },
-                        { name: "Updraft", description: "Jett propels herself upward, gaining height quickly." },
-                        { name: "Tailwind", description: "Jett dashes a short distance in the direction she's moving." },
-                        { name: "Ultimate - Tempest", description: "Jett unleashes her ultimate ability, gaining increased speed and accuracy." }
-                    ]
-                },
-                "Phoenix": {
-                    image: "path/to/phoenix-image.jpg",
-                    description: "Phoenix is a fiery duelist who uses flame-based abilities to take control of fights.",
-                    abilities: [
-                        { name: "Blaze", description: "Phoenix creates a wall of fire that blocks vision and heals him." },
-                        { name: "Curveball", description: "Phoenix throws a flashbang that curves around corners." },
-                        { name: "Hot Hands", description: "Phoenix throws a fireball that heals him or damages enemies." },
-                        { name: "Ultimate - Run It Back", description: "Phoenix can respawn at the location where he was killed." }
-                    ]
-                }
-                // Add more agents here
-            },
-            maps: {
-                "Ascent": {
-                    image: "path/to/ascent-image.jpg",
-                    description: "Ascent features a central open area that both teams can use to secure key positions."
-                },
-                "Bind": {
-                    image: "path/to/bind-image.jpg",
-                    description: "Bind offers unique teleporters that allow for strategic rotation and flanking."
-                }
-                // Add more maps here
-            },
-            guns: {
-                "Vandal": {
-                    image: "path/to/vandal-image.jpg",
-                    description: "The Vandal is a versatile rifle with high accuracy and lethal headshot damage."
-                },
-                "Phantom": {
-                    image: "path/to/phantom-image.jpg",
-                    description: "The Phantom excels at close to medium ranges with its high rate of fire."
-                }
-                // Add more guns here
-            }
-        };
-
-        // Function to fetch and display maintenance and incident information
-        async function fetchMaintenanceInfo() {
-            try {
-                const response = await fetch('https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3');
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-
-                const maintenanceEvents = data.maintenances || [];
-                const incidents = data.incidents || [];
-                const maintenanceAlert = document.getElementById('details');
-
-                if (maintenanceEvents.length > 0) {
-                    maintenanceAlert.innerHTML = ` 
-                        <h2>Maintenance Notice</h2> 
-                        <p>${maintenanceEvents[0].titles?.[0]?.content || "Maintenance is ongoing. Check back later!"}</p>
-                    `;
-                } else if (incidents.length > 0) {
-                    maintenanceAlert.innerHTML = `
-                        <h2>Incident Report</h2>
-                        <p>${incidents[0].titles?.[0]?.content || "An incident is being investigated. Please check back for updates."}</p>
-                    `;
-                } else {
-                    maintenanceAlert.innerHTML = `
-                        <h2>System Status</h2>
-                        <p>There is currently no maintenance or incidents on Valorant.</p>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error fetching maintenance info:', error);
-            }
-        }
-
-        // Function to fetch and display agents, maps, and guns
-        async function fetchGameContent() {
-            try {
-                const response = await fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3');
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-
-                // Populate Agents
-                const agentsList = document.getElementById('agents-list');
-                if (data.characters) {
-                    data.characters
-                        .filter(character => character.name && character.name !== "Null UI Data!")
-                        .forEach(character => {
-                            const div = document.createElement('div');
-                            div.className = 'list-item';
-                            div.innerText = character.name;
-                            div.onclick = () => showDetails('agents', character.name);
-                            agentsList.appendChild(div);
-                        });
-                }
-
-                // Populate Maps
-                const mapsList = document.getElementById('maps-list');
-                if (data.maps) {
-                    data.maps
-                        .filter(map => map.name && map.name !== "Null UI Data!")
-                        .forEach(map => {
-                            const div = document.createElement('div');
-                            div.className = 'list-item';
-                            div.innerText = map.name;
-                            div.onclick = () => showDetails('maps', map.name);
-                            mapsList.appendChild(div);
-                        });
-                }
-
-                // Populate Guns (Filtered Chromas)
-                const gunsList = document.getElementById('guns-list');
-                if (data.chromas) {
-                    const filteredGuns = data.chromas.filter(
-                        chroma => chroma.assetName && chroma.assetName.includes("Standard_Standard_PrimaryAsset_C")
-                    );
-                    filteredGuns.forEach(chroma => {
-                        const div = document.createElement('div');
-                        div.className = 'list-item';
-                        div.innerText = chroma.name || 'Unknown';
-                        div.onclick = () => showDetails('guns', chroma.name || 'Unknown');
-                        gunsList.appendChild(div);
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching game content:', error);
-            }
-        }
-
-        // Function to show details in the right-hand section
-        function showDetails(category, itemName) {
-            const details = document.getElementById('details');
-            const itemDetails = detailsData[category]?.[itemName];
-
-            if (itemDetails) {
-                details.innerHTML = `
-                    <h2>${itemName}</h2>
-                    <img src="${itemDetails.image}" alt="${itemName}" style="width: 100%; max-height: 300px; object-fit: cover; margin-bottom: 20px;">
-                    <p>${itemDetails.description}</p>
-                    ${category === 'agents' ? `
-                    <h3>Abilities</h3>
-                    <ul class="ability-list">
-                        ${itemDetails.abilities.map(ability => `
-                            <li class="ability-item">
-                                <strong>${ability.name}:</strong> ${ability.description}
-                            </li>
-                        `).join('')}
-                    </ul>
-                    ` : ''}
-                `;
-            } else {
-                details.innerHTML = `
-                    <h2>${itemName}</h2>
-                    <p>Details not available.</p>
-                `;
-            }
-        }
-
-        // Initialize the app
         function initializeApp() {
             fetchGameContent();
+            fetchMaintenanceInfo();
+        }
+
+        function fetchMaintenanceInfo() {
+            fetch('hhttps://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3')
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error! Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    var maintenanceAlert = document.getElementById('details');
+                    if (data.maintenances && data.maintenances.length > 0) {
+                        maintenanceAlert.innerHTML = '<h2>Maintenance Notice</h2>' +
+                            '<p>' + data.maintenances[0].titles[0].content + '</p>';
+                    } else if (data.incidents && data.incidents.length > 0) {
+                        maintenanceAlert.innerHTML = '<h2>Incident Report</h2>' +
+                            '<p>' + data.incidents[0].titles[0].content + '</p>';
+                    } else {
+                        maintenanceAlert.innerHTML = '<h2>System Status</h2>' +
+                            '<p>All systems are operational.</p>';
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error fetching maintenance info:', error);
+                });
+        }
+
+        function fetchGameContent() {
+            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3')
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error! Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    populateAgents(data.characters);
+                    populateMaps(data.maps);
+                    populateGuns(data.chromas);
+                })
+                .catch(function (error) {
+                    console.error('Error fetching game content:', error);
+                });
+        }
+
+        function populateAgents(agents) {
+            var agentsList = document.getElementById('agents-list');
+            agents.forEach(function (agent) {
+                var div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerText = agent.name;
+                div.onclick = function () {
+                    showAgentDetails(agent.name, agent.description, agent.abilities);
+                };
+                agentsList.appendChild(div);
+            });
+        }
+
+        function populateMaps(maps) {
+            var mapsList = document.getElementById('maps-list');
+            maps.forEach(function (map) {
+                var div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerText = map.name;
+                mapsList.appendChild(div);
+            });
+        }
+
+        function populateGuns(guns) {
+            var gunsList = document.getElementById('guns-list');
+            guns.forEach(function (gun) {
+                var div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerText = gun.name;
+                gunsList.appendChild(div);
+            });
+        }
+
+        function showAgentDetails(name, description, abilities) {
+            var details = document.getElementById('details');
+            var abilitiesList = abilities.map(function (ability) {
+                return '<li>' + ability + '</li>';
+            }).join('');
+            details.innerHTML = '<h2>' + name + '</h2>' +
+                '<p>' + description + '</p>' +
+                '<ul>' + abilitiesList + '</ul>';
         }
     </script>
 </body>
 </html>
+
 
