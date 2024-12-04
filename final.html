@@ -144,7 +144,7 @@
 
         // Fetch Maintenance Info
         function fetchMaintenanceInfo() {
-            fetch('https://na.api.riotgames.com/val/status/v1/platform-data?api_key=YOUR_API_KEY')
+            fetch('https://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3')
                 .then(function (response) {
                     if (!response.ok) {
                         throw new Error('HTTP error! Status: ' + response.status);
@@ -171,7 +171,7 @@
 
         // Fetch Game Content
         function fetchGameContent() {
-            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=YOUR_API_KEY')
+            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3')
                 .then(function (response) {
                     if (!response.ok) {
                         throw new Error('HTTP error! Status: ' + response.status);
