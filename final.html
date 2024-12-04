@@ -15,8 +15,6 @@
         }
         .container-fluid {
             display: flex;
-            flex-direction: row;
-            align-items: stretch;
             gap: 20px;
         }
         .sidebar {
@@ -40,95 +38,113 @@
             margin: 5px 0;
             background-color: #28293d;
             border-radius: 5px;
-            transition: background-color 0.2s;
         }
         .list-item:hover {
             background-color: #ff4655;
             color: #ffffff;
         }
-        .btn-refresh {
-            background-color: #ff4655;
-            color: #fff;
-            border: none;
-            margin-top: 20px;
-        }
-        .btn-refresh:hover {
-            background-color: #ff6772;
-        }
-        .section-header {
-            color: #ff4655;
-            margin-bottom: 10px;
-        }
-        #details {
-            height: 100%;
-            overflow-y: auto;
-        }
     </style>
 </head>
-<body onload="initializeApp()">
-
+<body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28293d;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Valorant App</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#agents">Agents</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#maps">Maps</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#guns">Guns</a>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link btn btn-link" onclick="fetchMaintenanceInfo()">Check Maintenance</button>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#agents">Agents</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#maps">Maps</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#guns">Guns</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container-fluid">
+        <!-- Sidebar -->
         <div class="sidebar">
             <div id="agents">
-                <h2 class="section-header">Agents</h2>
+                <h2>Agents</h2>
                 <div id="agents-list"></div>
             </div>
 
             <div id="maps" class="mt-4">
-                <h2 class="section-header">Maps</h2>
+                <h2>Maps</h2>
                 <div id="maps-list"></div>
             </div>
 
             <div id="guns" class="mt-4">
-                <h2 class="section-header">Guns</h2>
+                <h2>Guns</h2>
                 <div id="guns-list"></div>
             </div>
-
-            <button class="btn btn-refresh" onclick="fetchMaintenanceInfo()">Check System Status</button>
         </div>
 
+        <!-- Main Content -->
         <div class="content" id="details">
             <h2>Details</h2>
-            <p>Select an item from the list to see more information here.</p>
+            <p>Select an item to view details.</p>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
+        // Manual details for agents, maps, and guns
+        var detailsData = {
+            agents: {
+                "Jett": {
+                    image: "path/to/jett-image.jpg",
+                    description: "Jett is a nimble and aggressive duelist.",
+                    abilities: [
+                        { name: "Cloudburst", description: "Throws a smoke to obscure vision." },
+                        { name: "Updraft", description: "Propels Jett into the air." },
+                        { name: "Tailwind", description: "Dashes a short distance in the direction of movement." },
+                        { name: "Blade Storm", description: "Throws deadly knives with perfect accuracy." }
+                    ]
+                },
+                "Phoenix": {
+                    image: "path/to/phoenix-image.jpg",
+                    description: "Phoenix is a fiery duelist who can self-heal and control the battlefield.",
+                    abilities: [
+                        { name: "Hot Hands", description: "Throws a fireball that heals Phoenix and damages enemies." },
+                        { name: "Curveball", description: "Throws a blinding flare around corners." },
+                        { name: "Blaze", description: "Summons a wall of fire to block vision." },
+                        { name: "Run It Back", description: "Marks a spot to revive Phoenix if he dies during its duration." }
+                    ]
+                }
+            },
+            maps: {
+                "Bind": {
+                    image: "path/to/bind-image.jpg",
+                    description: "A map with teleporters and two bomb sites."
+                },
+                "Ascent": {
+                    image: "path/to/ascent-image.jpg",
+                    description: "A map with open spaces and doors that can be locked down."
+                }
+            },
+            guns: {
+                "Vandal": {
+                    image: "path/to/vandal-image.jpg",
+                    description: "A powerful rifle with high damage and accuracy."
+                },
+                "Phantom": {
+                    image: "path/to/phantom-image.jpg",
+                    description: "A silenced rifle with a high rate of fire."
+                }
+            }
+        };
+
+        // Initialize the app: fetch game content and maintenance info
         function initializeApp() {
             fetchGameContent();
             fetchMaintenanceInfo();
         }
 
+        // Fetch Maintenance Info
         function fetchMaintenanceInfo() {
-            fetch('hhttps://na.api.riotgames.com/val/status/v1/platform-data?api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3')
+            fetch('https://na.api.riotgames.com/val/status/v1/platform-data?api_key=YOUR_API_KEY')
                 .then(function (response) {
                     if (!response.ok) {
                         throw new Error('HTTP error! Status: ' + response.status);
@@ -153,8 +169,9 @@
                 });
         }
 
+        // Fetch Game Content
         function fetchGameContent() {
-            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-28725f65-0410-4433-a5e4-87f32c6a67d3')
+            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=YOUR_API_KEY')
                 .then(function (response) {
                     if (!response.ok) {
                         throw new Error('HTTP error! Status: ' + response.status);
@@ -171,6 +188,7 @@
                 });
         }
 
+        // Populate Agents List
         function populateAgents(agents) {
             var agentsList = document.getElementById('agents-list');
             agents.forEach(function (agent) {
@@ -184,6 +202,7 @@
             });
         }
 
+        // Populate Maps List
         function populateMaps(maps) {
             var mapsList = document.getElementById('maps-list');
             maps.forEach(function (map) {
@@ -194,6 +213,7 @@
             });
         }
 
+        // Populate Guns List
         function populateGuns(guns) {
             var gunsList = document.getElementById('guns-list');
             guns.forEach(function (gun) {
@@ -204,17 +224,24 @@
             });
         }
 
+        // Show Agent Details
         function showAgentDetails(name, description, abilities) {
             var details = document.getElementById('details');
-            var abilitiesList = abilities.map(function (ability) {
-                return '<li>' + ability + '</li>';
-            }).join('');
-            details.innerHTML = '<h2>' + name + '</h2>' +
+            var abilitiesHtml = '<h3>Abilities</h3><ul>';
+            abilities.forEach(function (ability) {
+                abilitiesHtml += '<li><strong>' + ability.name + ':</strong> ' + ability.description + '</li>';
+            });
+            abilitiesHtml += '</ul>';
+
+            details.innerHTML = 
+                '<h2>' + name + '</h2>' +
+                '<img src="' + detailsData.agents[name].image + '" alt="' + name + '" style="width: 100%; max-height: 300px; object-fit: cover; margin-bottom: 20px;">' +
                 '<p>' + description + '</p>' +
-                '<ul>' + abilitiesList + '</ul>';
+                abilitiesHtml;
         }
+
+        // Call initializeApp to load content and status
+        window.onload = initializeApp;
     </script>
 </body>
 </html>
-
-
