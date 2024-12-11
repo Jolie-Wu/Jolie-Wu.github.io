@@ -21,9 +21,12 @@
             </ul>
         </div>
     </nav>
-    
+
     <div class="container my-4">
         <h2>Maps</h2>
+        <div class="mb-3">
+            <input id="searchBar" class="form-control" type="text" placeholder="Enter a Map name" oninput="searchMaps()">
+        </div>
         <div class="accordion" id="accordionExample"></div>
     </div>
 
@@ -179,7 +182,7 @@
         function fetchMaps() {
             const accordionContainer = document.getElementById('accordionExample');
             
-            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-bb425f67-589f-4d28-aed1-04fb210b35cf')
+            fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-0fa06b06-12e6-4e64-8665-06633e370980')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -210,9 +213,10 @@
 
                         const accordionItem = document.createElement('div');
                         accordionItem.className = 'accordion-item';
+                        accordionItem.dataset.mapName = mapName.toLowerCase();
 
                         accordionItem.innerHTML = `
-                            <h2 class="accordion-header" id="heading${index}">
+                            <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button ${index === 0 ? "" : "collapsed"}" 
                                     type="button" 
                                     data-bs-toggle="collapse" 
@@ -243,6 +247,19 @@
                     errorMessage.textContent = "Unable to load map data. Please try again later.";
                     accordionContainer.appendChild(errorMessage);
                 });
+        }
+        function searchMaps() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(item => {
+                const mapName = item.dataset.mapName;
+                if (mapName.includes(query)) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
         }
         fetchMaps();
     </script>
