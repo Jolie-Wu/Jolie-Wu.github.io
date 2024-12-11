@@ -24,6 +24,9 @@
 
     <div class="container my-4">
         <h2>Agents</h2>
+        <div class="mb-3">
+            <input id="searchBar" class="form-control" type="text" placeholder="Enter an Agent name" oninput="searchAgent()">
+        </div>
         <div class="accordion" id="accordionExample"></div>
     </div>
     
@@ -346,7 +349,7 @@
     function fetchAgents() {
         const accordionContainer = document.getElementById('accordionExample');
 
-        fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-bb425f67-589f-4d28-aed1-04fb210b35cf')
+        fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-0fa06b06-12e6-4e64-8665-06633e370980')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -374,6 +377,8 @@
 
                     const accordionItem = document.createElement("div");
                     accordionItem.className = "accordion-item";
+                    accordionItem.dataset.agentName = agentName.toLowerCase();
+
                     accordionItem.innerHTML = `
                         <h2 class="accordion-header" id="heading${index}">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
@@ -406,8 +411,20 @@
                 errorMessage.textContent = "Unable to load agent data. Please try again later.";
                 accordionContainer.appendChild(errorMessage);
             });
-    }
+        }
+        function searchAgent() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const accordionItems = document.querySelectorAll('.accordion-item');
 
+            accordionItems.forEach(item => {
+                const agentName = item.dataset.agentName;
+                if (agentName.includes(query)) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
     fetchAgents();
 </script>
 </body>
