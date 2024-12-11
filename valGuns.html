@@ -21,11 +21,15 @@
             </ul>
         </div>
     </nav>
-    
+
     <div class="container my-4">
         <h2>Guns</h2>
+        <div class="mb-3">
+            <input id="searchBar" class="form-control" type="text" placeholder="Enter a Map name" oninput="searchGun()">
+        </div>
         <div class="accordion" id="accordionExample"></div>
     </div>
+
     <script>
         const detailsData = {
             guns: {
@@ -34,19 +38,19 @@
                     description: "The Odin is a heavy machine gun with high fire rate and large magazine size, ideal for suppressing enemies.",
                     type: "Machine Gun",
                     damage: {
-                        head: 95,
-                        body: 38,
-                        legs: 32
+                        head: 195,
+                        body: 150,
+                        legs: 112.5
                     }
                 },
                 "Ares": {
-                    image: "agent/Ares.jpg",
+                    image: "agent/ares.jpg",
                     description: "The Ares is a light machine gun that delivers sustained fire with good accuracy, best used in controlled bursts.",
                     type: "Machine Gun",
                     damage: {
-                       head: 72,
-                        body: 30,
-                        legs: 25
+                        head: 195,
+                        body: 160,
+                        legs: 120
                     }
                 },
                 "Vandal": {
@@ -54,9 +58,9 @@
                     description: "The Vandal is a versatile rifle with high accuracy and lethal headshot damage.",
                     type: "Rifle",
                     damage: {
-                        head: 160,
-                        body: 40,
-                        legs: 34
+                        head: 195,
+                        body: 175,
+                        legs: 125
                     }
                 },
                 "Bulldog": {
@@ -64,9 +68,9 @@
                     description: "The Bulldog is a compact shotgun that deals high damage in close-range combat, with a burst fire mode.",
                     type: "Shotgun",
                     damage: {
-                        head: 115,
-                        body: 35,
-                        legs: 29
+                        head: 202.5,
+                        body: 135,
+                        legs: 101.25
                     }
                 },
                 "Phantom": {
@@ -74,9 +78,9 @@
                     description: "The Phantom excels at close to medium ranges with its high rate of fire.",
                     type: "Rifle",
                     damage: {
-                        head: 140,
-                        body: 39,
-                        legs: 33
+                        head: 156,
+                        body: 130,
+                        legs: 97
                     }
                 },
                 "Judge": {
@@ -84,19 +88,19 @@
                     description: "The Judge is a shotgun with a high rate of fire, designed for close-quarters combat.",
                     type: "Shotgun",
                     damage: {
-                        head: 34,
-                        body: 17,
-                        legs: 14
+                        head: 195,
+                        body: 195,
+                        legs: 146
                     }
                 },
                 "Bucky": {
-                    image:"agent/bucky.jpg",
+                    image:"agent/Bucky.jpg",
                     description: "The Bucky is a pump-action shotgun known for its high damage at close range and quick follow-up shots.",
                     type: "Shotgun",
                     damage: {
-                        head: 40,
-                        body: 20,
-                        legs: 17
+                        head: 236,
+                        body: 150,
+                        legs: 112.5
                     }
                 },
                 "Frenzy": {
@@ -104,9 +108,9 @@
                     description: "The Frenzy is a fast-firing, fully automatic pistol with a small magazine size, excellent for close-range encounters.",
                     type: "Pistol",
                     damage: {
-                        head: 78,
-                        body: 26,
-                        legs: 22
+                        head: 158,
+                        body: 120,
+                        legs: 90
                     }
                 },
                 "Classic": {
@@ -124,9 +128,9 @@
                     description: "The Ghost is a silenced pistol with high accuracy, perfect for stealth and headshot precision.",
                     type: "Pistol",
                     damage: {
-                        head: 105,
-                        body: 30,
-                        legs: 255
+                        head: 195,
+                        body: 130,
+                        legs: 97.5
                     }
                 },
                 "Sheriff": {
@@ -134,9 +138,9 @@
                     description: "The Sheriff is a powerful sidearm with high damage per shot, excellent at close range.",
                     type: "Sidearm",
                     damage: {
-                        head: 159,
-                        body: 55,
-                        legs: 46
+                        head: 202,
+                        body: 150,
+                        legs: 113
                     }
                 },
                 "Shorty": {
@@ -144,9 +148,9 @@
                     description: "The Shorty is a double-barrel shotgun with rapid reload and devastating damage at point-blank range.",
                     type: "Shotgun",
                     damage: {
-                        head: 24,
-                        body: 12,
-                        legs: 10
+                        head: 320,
+                        body: 200,
+                        legs: 150
                     }
                 },
                 "Operator": {
@@ -155,8 +159,8 @@
                     type: "Sniper Rifle",
                     damage: {
                         head: 255,
-                        body: 150,
-                        legs: 120
+                        body: 202.5,
+                        legs: 151.875
                     }
                 },
                 "Guardian": {
@@ -165,8 +169,8 @@
                     type: "Rifle",
                     damage: {
                         head: 195,
-                        body: 65,
-                        legs: 48
+                        body: 145,
+                        legs: 108
                     }
                 },
                 "Outlaw": {
@@ -174,9 +178,9 @@
                     description: "The Outlaw is a lever-action sniper rifle with high damage and slower reload time.",
                     type: "Sniper Rifle",
                     damage: {
-                        head: 238,
-                        body: 140,
-                        legs: 110
+                        head: 290,
+                        body: 200,
+                        legs: 150
                     }
                 },
                 "Marshal": {
@@ -184,9 +188,9 @@
                     description: "The Marshal is a lever-action shotgun with high damage and good accuracy at medium range.",
                     type: "Shotgun",
                     damage: {
-                        head: 202,
-                        body: 101,
-                        legs: 85
+                        head: 202.5,
+                        body: 150,
+                        legs: 112.5
                     }
                 },
                 "Spectre": {
@@ -194,9 +198,9 @@
                     description: "The Spectre is a submachine gun with high mobility and fast rate of fire, great for close to mid-range fights.",
                     type: "SMG",
                     damage: {
-                        head: 67,
-                        body: 27,
-                        legs: 22
+                        head: 195,
+                        body: 150,
+                        legs: 112.5
                     }
                 },
                 "Stinger": {
@@ -204,9 +208,9 @@
                     description: "The Stinger is a small, low-recoil submachine gun with rapid fire, effective in close-quarters combat.",
                     type: "SMG",
                     damage: {
-                        head: 78,
-                        body: 26,
-                        legs: 22
+                        head: 200,
+                        body: 120,
+                        legs: 90
                     }
                 },
                 "Standard Melee": {
@@ -224,7 +228,7 @@
     function fetchGuns() {
         const accordionContainer = document.getElementById('accordionExample');
 
-        fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-bb425f67-589f-4d28-aed1-04fb210b35cf')
+        fetch('https://na.api.riotgames.com/val/content/v1/contents?locale=en-US&api_key=RGAPI-0fa06b06-12e6-4e64-8665-06633e370980')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -249,10 +253,16 @@
 
                     const accordionItem = document.createElement('div');
                     accordionItem.className = 'accordion-item';
+                    accordionItem.dataset.gunName = gunName.toLowerCase();
 
                     accordionItem.innerHTML = `
                         <h2 class="accordion-header" id="heading${index}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
+                            <button class="accordion-button collapsed" 
+                                type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapse${index}" 
+                                aria-expanded="false" 
+                                aria-controls="collapse${index}">
                                 ${gunName}
                             </button>
                         </h2>
@@ -282,9 +292,26 @@
             });
     }
 
+    function searchGun() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(item => {
+                const gunName = item.dataset.gunName;
+                if (gunName.includes(query)) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
     fetchGuns();
     </script>
 </body>
+</html>
+
+
+
 </html>
 
 
